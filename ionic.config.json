@@ -1,0 +1,7 @@
+{
+  "name": "haleslandgliding",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular-standalone"
+}
