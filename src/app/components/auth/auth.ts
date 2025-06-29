@@ -22,7 +22,7 @@ export class AuthComponent {
 
   public signIn(){
     this.loginErrMessage = undefined;
-    this.authService.signin(this.inputEmail, this.inputPassword).pipe(
+    this.authService.signIn(this.inputEmail, this.inputPassword).pipe(
       catchError(err => {
         const fbe = err as FirebaseError;
         switch(fbe.code){

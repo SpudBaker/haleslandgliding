@@ -1,6 +1,8 @@
 import { inject, Injectable } from '@angular/core';
-import { Auth, signInWithEmailAndPassword, user, UserCredential, sendEmailVerification, createUserWithEmailAndPassword } from '@angular/fire/auth';
-import { from, Observable } from 'rxjs';
+import { Auth, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendEmailVerification,
+  signOut, user, User, UserCredential } from '@angular/fire/auth';
+import { from, Observable, ReplaySubject } from 'rxjs';
+import { map } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -8,14 +10,24 @@ import { from, Observable } from 'rxjs';
 export class AuthService {
 
   private firebaseAuth: Auth = inject(Auth);
-  public user$ = user(this.firebaseAuth);
+  public user$ = new ReplaySubject<User | null>(undefined);
 
-  public signin(email: string, password: string): Observable<UserCredential> {
+  constructor(){
+    user(this.firebaseAuth).pipe(
+      map(user => this.user$.next(user))
+    ).subscribe();
+  }
+
+  public signIn(email: string, password: string): Observable<UserCredential> {
     return from(signInWithEmailAndPassword(
       this.firebaseAuth,
       email,
       password
     ));
+  }
+
+  public signOut(): Observable<void> {
+    return from(signOut(this.firebaseAuth));
   }
 
   public async signup(email: string, password: string): Promise<void> {
