@@ -1,26 +1,26 @@
 export class Member {
-    Ref: string;
-    MemberType_ref!: string;
-    Membership_No!: string;
-    Name!: string;
-    Postcode!: string;
-    Tel_Mobile!: string;
-    EMail!: string;
-    Emergency_Contact!: string;
-    Date_Joined!: string;
-    Membership_Expires!: string;
-    Date_Lapsed!: string;
-    Lapsed_Member!: string;
-    Medical_ValidTo!: string;
-    AFR_Due!: string;
-    RoundTrip_Mileage!: string;
-    ChargeTo_ref!: string;
-    BalLastMonthEnd!: string;
-    DateLastFlight!: string;
+    readonly Ref: string;
+    readonly MemberType_ref: string;
+    readonly Membership_No: string;
+    readonly Name: string;
+    readonly Postcode: string;
+    readonly Tel_Mobile: string;
+    readonly EMail: string;
+    readonly Emergency_Contact: string;
+    readonly Date_Joined: Date;
+    readonly Membership_Expires: Date;
+    readonly Date_Lapsed: Date | undefined;
+    readonly Lapsed_Member: boolean;
+    readonly Medical_ValidTo: Date | undefined;
+    readonly AFR_Due: Date;
+    readonly RoundTrip_Mileage: number;
+    readonly ChargeTo_ref: string;
+    readonly BalLastMonthEnd: number;
+    readonly DateLastFlight: Date;
     constructor(Ref: string, MemberType_ref: string, Membership_No: string, Name: string, Postcode: string, Tel_Mobile: string,
-        EMail: string, Emergency_Contact: string, Date_Joined: string, Membership_Expires: string, Date_Lapsed: string,
-        Lapsed_Member: string, Medical_ValidTo: string, AFR_Due: string, RoundTrip_Mileage: string, ChargeTo_ref: string,
-        BalLastMonthEnd: string, DateLastFlight: string){
+        EMail: string, Emergency_Contact: string, Date_Joined: Date, Membership_Expires: Date, Date_Lapsed: Date | undefined,
+        Lapsed_Member: boolean, Medical_ValidTo: Date | undefined, AFR_Due: Date, RoundTrip_Mileage: number, ChargeTo_ref: string,
+        BalLastMonthEnd: number, DateLastFlight: Date){
             this.Ref = Ref,
             this.MemberType_ref = MemberType_ref;
             this.Membership_No = Membership_No;

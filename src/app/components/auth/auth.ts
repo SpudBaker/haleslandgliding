@@ -43,7 +43,7 @@ export class AuthComponent {
   }
 
   public resetPassword(){
-
+    this.authService.sendPasswordResetEmail(this.inputEmail).subscribe();
   }
 
 }

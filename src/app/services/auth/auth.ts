@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
-import { Auth, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendEmailVerification,
-  signOut, user, User, UserCredential } from '@angular/fire/auth';
+import { ActionCodeSettings, Auth, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendPasswordResetEmail,
+   sendEmailVerification, signOut, user, User, UserCredential } from '@angular/fire/auth';
 import { from, Observable, ReplaySubject } from 'rxjs';
 import { map } from 'rxjs';
 
@@ -16,6 +16,19 @@ export class AuthService {
     user(this.firebaseAuth).pipe(
       map(user => this.user$.next(user))
     ).subscribe();
+  }
+
+
+  public sendPasswordResetEmail(email: string): Observable<void>{
+    const acs: ActionCodeSettings= {
+      url: 'https://localhost:/4200',
+      handleCodeInApp: false
+    };
+    return from(sendPasswordResetEmail(
+      this.firebaseAuth,
+      email,
+      acs
+    ));
   }
 
   public signIn(email: string, password: string): Observable<UserCredential> {
