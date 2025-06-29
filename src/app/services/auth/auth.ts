@@ -30,13 +30,13 @@ export class AuthService {
     return from(signOut(this.firebaseAuth));
   }
 
-  public async signup(email: string, password: string): Promise<void> {
+  /*public async signup(email: string, password: string): Promise<void> {
     const userCredential: UserCredential = await createUserWithEmailAndPassword(
       this.firebaseAuth,
       email,
       password
     )
     await sendEmailVerification(userCredential.user, null)
-  }
+  }*/
   
 }

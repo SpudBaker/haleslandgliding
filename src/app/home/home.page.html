@@ -10,7 +10,7 @@
           <app-user></app-user>
         </ion-col>
       </ion-row>
-      @if(!context.user){
+      @if(!context.user && authInitiated){
         <ion-row>
           <ion-col size="2">
           </ion-col>
