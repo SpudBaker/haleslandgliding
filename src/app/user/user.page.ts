@@ -8,13 +8,15 @@ import { catchError, switchMap } from 'rxjs/operators';
 import { FirebaseError } from '@angular/fire/app';
 import { User } from '@angular/fire/auth';
 import { AsyncPipe } from '@angular/common';
-import { UserComponent } from "../components/user/user";
+import { UserComponent } from "../components/nav-user/nav-user";
+import { FlightsComponent } from '../components/nav-flights/nav-flights';
+import { AccountsComponent } from '../components/nav-accounts/nav-accounts';
 
 @Component({
   selector: 'app-user-page',
   templateUrl: 'user.page.html',
   styleUrls: ['user.page.scss'],
-  imports: [IonContent, AsyncPipe, IonGrid, IonCol, IonRow, IonButton, IonImg, UserComponent],
+  imports: [IonContent, AsyncPipe, IonGrid, IonCol, IonRow, IonButton, IonImg, AccountsComponent, UserComponent, FlightsComponent],
 })
 export class UserPage {
 
