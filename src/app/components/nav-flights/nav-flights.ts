@@ -24,7 +24,7 @@ export class FlightsComponent {
   }
 
   public navUserPage(): void{
-    this.navController.navigateRoot('user');
+    this.navController.navigateRoot('flights');
   }
 
 }

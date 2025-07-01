@@ -1,24 +1,23 @@
 import { Component } from '@angular/core';
-import { IonIcon, IonGrid, IonCol, IonRow, IonContent, IonButton, IonImg, LoadingController, NavController} from '@ionic/angular/standalone';
+import { IonGrid, IonCol, IonRow, IonContent, IonImg, LoadingController, NavController} from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { homeOutline } from 'ionicons/icons';
-import { AuthService } from '../services/auth/auth';
+import { AuthService } from '../../services/auth/auth';
 import { Observable, from } from 'rxjs';
 import { catchError, switchMap } from 'rxjs/operators';
 import { FirebaseError } from '@angular/fire/app';
 import { User } from '@angular/fire/auth';
-import { AsyncPipe } from '@angular/common';
-import { UserComponent } from "../components/nav-user/nav-user";
-import { FlightsComponent } from '../components/nav-flights/nav-flights';
-import { AccountsComponent } from '../components/nav-accounts/nav-accounts';
+import { UserComponent } from "../../components/nav-user/nav-user";
+import { FlightsComponent } from '../../components/nav-flights/nav-flights';
 
 @Component({
-  selector: 'app-user-page',
-  templateUrl: 'user.page.html',
-  styleUrls: ['user.page.scss'],
-  imports: [IonContent, AsyncPipe, IonGrid, IonCol, IonRow, IonButton, IonImg, AccountsComponent, UserComponent, FlightsComponent],
+  selector: 'app-accounts-page',
+  templateUrl: 'accounts.page.html',
+  styleUrls: ['accounts.page.scss'],
+  imports: [IonContent, IonGrid, IonCol, IonRow, IonImg,
+    UserComponent, FlightsComponent],
 })
-export class UserPage {
+export class AccountsPage {
 
   public user$: Observable<User | null>
 

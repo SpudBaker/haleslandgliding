@@ -24,7 +24,7 @@ export class AccountsComponent {
   }
 
   public navUserPage(): void{
-    this.navController.navigateRoot('user');
+    this.navController.navigateRoot('accounts');
   }
 
 }

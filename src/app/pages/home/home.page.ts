@@ -1,8 +1,7 @@
 import { Component } from '@angular/core';
 import { IonImg, IonGrid, IonCol, IonRow, IonContent, NavController } from '@ionic/angular/standalone';
-import { AuthService } from '../services/auth/auth';
-import { AuthComponent } from "../components/auth/auth";
-import { AsyncPipe } from '@angular/common';
+import { AuthService } from '../../services/auth/auth';
+import { AuthComponent } from "../../components/auth/auth";
 
 @Component({
   selector: 'app-home-page',
