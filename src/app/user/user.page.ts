@@ -1,25 +1,49 @@
 import { Component } from '@angular/core';
-import { IonImg, IonGrid, IonCol, IonRow, IonContent } from '@ionic/angular/standalone';
+import { IonIcon, IonGrid, IonCol, IonRow, IonContent, IonButton, IonImg, LoadingController, NavController} from '@ionic/angular/standalone';
+import { addIcons } from 'ionicons';
+import { homeOutline } from 'ionicons/icons';
 import { AuthService } from '../services/auth/auth';
-import { Observable } from 'rxjs';
-import { tap } from 'rxjs';
-import { AuthComponent } from "../components/auth/auth";
+import { Observable, from } from 'rxjs';
+import { catchError, switchMap } from 'rxjs/operators';
+import { FirebaseError } from '@angular/fire/app';
 import { User } from '@angular/fire/auth';
 import { AsyncPipe } from '@angular/common';
-import { UserComponent } from '../components/user/user';
+import { UserComponent } from "../components/user/user";
 
 @Component({
   selector: 'app-user-page',
   templateUrl: 'user.page.html',
   styleUrls: ['user.page.scss'],
-  imports: [IonContent],
+  imports: [IonContent, AsyncPipe, IonGrid, IonCol, IonRow, IonButton, IonImg, UserComponent],
 })
 export class UserPage {
 
   public user$: Observable<User | null>
 
-  constructor(private authService: AuthService) {
+  constructor(private authService: AuthService, private loadingController: LoadingController,
+    private navController: NavController) {
     this.user$ = authService.user$;
+     addIcons({homeOutline});
+  }
+
+  public navHome(): Promise<boolean>{
+    return this.navController.navigateRoot('home');
+  }
+
+  public signOut(){
+    from(this.loadingController.create()).pipe(
+      switchMap(lc => from(lc.present()).pipe(
+        switchMap(() => this.authService.signOut()),
+        switchMap(() => lc.dismiss()),
+        switchMap(() => this.navHome()),
+        catchError(err => {
+          const fbe = err as FirebaseError;
+          switch(fbe.code){
+            }
+          return lc.dismiss();
+        })
+      ))
+    ).subscribe();
   }
 
 }

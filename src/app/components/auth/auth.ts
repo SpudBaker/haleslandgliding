@@ -2,10 +2,10 @@ import { Component } from '@angular/core';
 import { IonButton, IonCol, IonGrid, IonRow, IonInput, IonText } from '@ionic/angular/standalone';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../services/auth/auth';
-import { catchError, EMPTY, from, of, switchMap } from 'rxjs';
+import { catchError, from, switchMap } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { FirebaseError } from '@angular/fire/app';
-import { LoadingController } from '@ionic/angular';
+import { LoadingController, NavController } from '@ionic/angular';
 
 @Component({
   selector: 'app-auth',
@@ -19,7 +19,8 @@ export class AuthComponent {
   public inputPassword = '';
   public loginErrMessage: string | undefined;
 
-  constructor(private authService: AuthService, private loadingController: LoadingController){}
+  constructor(private authService: AuthService, private loadingController: LoadingController,
+    private navController: NavController){}
 
   public signIn(){
     this.loginErrMessage = undefined;
@@ -27,6 +28,7 @@ export class AuthComponent {
       switchMap(lc => from(lc.present()).pipe(
         switchMap(() => this.authService.signIn(this.inputEmail, this.inputPassword)),
         switchMap(() => lc.dismiss()),
+        switchMap(() => this.navController.navigateRoot('user')),
         catchError(err => {
           const fbe = err as FirebaseError;
           switch(fbe.code){

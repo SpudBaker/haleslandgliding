@@ -2,22 +2,22 @@ import { inject, Injectable } from '@angular/core';
 import { ActionCodeSettings, Auth, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendPasswordResetEmail,
    sendEmailVerification, signOut, user, User, UserCredential } from '@angular/fire/auth';
 import { from, Observable, ReplaySubject } from 'rxjs';
-import { map } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
+  public authInitiated = false;
   private firebaseAuth: Auth = inject(Auth);
-  public user$ = new ReplaySubject<User | null>(undefined);
+  public user$ = new ReplaySubject<User | null>(1);
 
   constructor(){
     user(this.firebaseAuth).pipe(
       map(user => this.user$.next(user))
     ).subscribe();
   }
-
 
   public sendPasswordResetEmail(email: string): Observable<void>{
     const acs: ActionCodeSettings= {

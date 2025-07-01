@@ -1,3 +1,50 @@
+
+import { AuthService } from './app/services/auth/auth';
+import { inject } from '@angular/core';
+import { ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
+import { NavController } from '@ionic/angular';
+import { of } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
+
+export namespace AuthGuard {
+    export const canActivateLoggedIn = (
+        route: ActivatedRouteSnapshot, 
+        state: RouterStateSnapshot
+    ) => {
+        const authService = inject(AuthService);
+        const navController = inject(NavController);
+
+        return authService.user$.pipe(
+            switchMap(user => {
+                if(user?.email){
+                    return of(true);
+                } else {
+                    navController.navigateRoot('home');
+                return of(false);
+                }
+            })
+        )
+    }
+    export const canActivateLoggedOut = (
+        route: ActivatedRouteSnapshot, 
+        state: RouterStateSnapshot
+    ) => {
+        const authService = inject(AuthService);
+        const navController = inject(NavController);
+
+        return authService.user$.pipe(
+            switchMap(user => {
+                if(!user?.email){
+                    return of(true);
+                } else {
+                    navController.navigateRoot('user');
+                return of(false);
+                }
+            })
+        )
+    }
+}
+
 export class Member {
     readonly Ref: string;
     readonly MemberType_ref: string;
