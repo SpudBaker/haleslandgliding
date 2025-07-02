@@ -1,12 +1,8 @@
-@if({user: user$ | async}; as context){
-    <ion-grid>
-        @if(context.user){
-            <ion-row>
-                <ion-col size="4"></ion-col>
-                <ion-col size="8">
-                    <ion-icon name="person-circle-outline" (click)="navUserPage()"></ion-icon>
-                </ion-col>
-            </ion-row>
-        }
-    </ion-grid>
-}
+<ion-grid>
+    <ion-row>
+        <ion-col size="4"></ion-col>
+        <ion-col size="8">
+            <ion-icon name="person-circle-outline" (click)="navUserPage()"></ion-icon>
+        </ion-col>
+    </ion-row>
+</ion-grid>

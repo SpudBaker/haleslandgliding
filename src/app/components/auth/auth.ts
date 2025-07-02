@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { IonButton, IonCol, IonGrid, IonRow, IonInput, IonText } from '@ionic/angular/standalone';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../services/auth/auth';
+import { DataService } from 'src/app/services/data/data';
 import { catchError, from, switchMap } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { FirebaseError } from '@angular/fire/app';
@@ -19,21 +20,45 @@ export class AuthComponent {
   public inputPassword = '';
   public loginErrMessage: string | undefined;
 
-  constructor(private authService: AuthService, private loadingController: LoadingController,
+  constructor(private authService: AuthService, private dataService: DataService, private loadingController: LoadingController,
     private navController: NavController){}
+
+  public disableButton(): boolean {
+    if(this.inputEmail?.length > 0 && this.inputPassword?.length > 0){
+      return false;
+    } else {
+      return true;
+    }
+  }
 
   public signIn(){
     this.loginErrMessage = undefined;
     from(this.loadingController.create()).pipe(
       switchMap(lc => from(lc.present()).pipe(
-        switchMap(() => this.authService.signIn(this.inputEmail, this.inputPassword)),
-        switchMap(() => lc.dismiss()),
-        switchMap(() => this.navController.navigateRoot('user')),
+        switchMap(() => this.dataService.getMemberDetails(this.inputEmail)),
+        switchMap(member => {
+          if(member){
+            return this.authService.signIn(this.inputEmail, this.inputPassword).pipe(
+                    switchMap(() => lc.dismiss()),
+                    switchMap(() => this.navController.navigateRoot('user'))
+              )
+            } else {
+              this.loginErrMessage = 'email does not appear to belong to a member of Mendip Gliding Club';
+              return lc.dismiss();
+          }
+        }),
         catchError(err => {
           const fbe = err as FirebaseError;
+          console.log(fbe.code)
           switch(fbe.code){
             case 'auth/invalid-email':
               this.loginErrMessage = 'Invalid email';
+              break;
+            case 'auth/missing-password':
+              this.loginErrMessage = 'Password is required';
+              break;
+            case 'auth/invalid-credential':
+              this.loginErrMessage = 'Incorrect password';
               break;
             default:
               this.loginErrMessage = fbe.message;
