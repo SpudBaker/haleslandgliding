@@ -21,7 +21,7 @@ export class AuthService {
 
   public sendPasswordResetEmail(email: string): Observable<void>{
     const acs: ActionCodeSettings= {
-      url: 'https://localhost:/4200',
+      url: 'https://glidexmemberview.firebaseapp.com/',
       handleCodeInApp: false
     };
     return from(sendPasswordResetEmail(

@@ -8,7 +8,6 @@ import { catchError, switchMap } from 'rxjs/operators';
 import { FirebaseError } from '@angular/fire/app';
 import { User } from '@angular/fire/auth';
 import { UserComponent } from "../../components/nav-user/nav-user";
-import { FlightsComponent } from '../../components/nav-flights/nav-flights';
 import { AccountsComponent } from "../../components/nav-accounts/nav-accounts";
 
 @Component({
@@ -16,7 +15,7 @@ import { AccountsComponent } from "../../components/nav-accounts/nav-accounts";
   templateUrl: 'flights.page.html',
   styleUrls: ['flights.page.scss'],
   imports: [IonContent, IonGrid, IonCol, IonRow, IonImg,
-    UserComponent, FlightsComponent, AccountsComponent],
+    UserComponent, AccountsComponent],
 })
 export class FlightsPage {
 

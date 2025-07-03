@@ -15,7 +15,7 @@ import * as Globals from '../../../globals';
   selector: 'app-user-page',
   templateUrl: 'user.page.html',
   styleUrls: ['user.page.scss'],
-  imports: [IonItem, IonLabel, IonContent, IonGrid, IonCol, IonRow, IonButton, IonImg, IonText, AccountsComponent, FlightsComponent],
+  imports: [IonItem, IonLabel, IonContent, IonGrid, IonCol, IonRow, IonButton, IonImg, AccountsComponent, FlightsComponent],
 })
 export class UserPage {
 

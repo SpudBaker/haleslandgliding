@@ -1,27 +1,28 @@
-import { Component } from '@angular/core';
-import { IonButton, IonCol, IonGrid, IonRow, IonInput, IonText } from '@ionic/angular/standalone';
+import { Component, inject } from '@angular/core';
+import { IonButton, IonCol, IonGrid, IonRow, IonInput, IonText, LoadingController, NavController } from '@ionic/angular/standalone';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../services/auth/auth';
 import { DataService } from 'src/app/services/data/data';
 import { catchError, from, switchMap } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { FirebaseError } from '@angular/fire/app';
-import { LoadingController, NavController } from '@ionic/angular';
 
 @Component({
   selector: 'app-auth',
   imports: [CommonModule, FormsModule, IonGrid, IonRow, IonCol, IonInput, IonButton, IonText],
   templateUrl: './auth.html',
-  styleUrl: './auth.scss'
+  styleUrl: './auth.scss',
+  providers: [LoadingController, NavController]
 })
 export class AuthComponent {
 
   public inputEmail = '';
   public inputPassword = '';
   public loginErrMessage: string | undefined;
+  private loadingController = inject(LoadingController);
+  private navController = inject(NavController);
 
-  constructor(private authService: AuthService, private dataService: DataService, private loadingController: LoadingController,
-    private navController: NavController){}
+  constructor(private authService: AuthService, private dataService: DataService){}
 
   public disableButton(): boolean {
     if(this.inputEmail?.length > 0 && this.inputPassword?.length > 0){
