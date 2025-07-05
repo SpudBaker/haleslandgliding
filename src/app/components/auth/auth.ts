@@ -3,7 +3,7 @@ import { IonButton, IonCol, IonGrid, IonRow, IonInput, IonText, LoadingControlle
 import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../services/auth/auth';
 import { DataService } from 'src/app/services/data/data';
-import { catchError, from, switchMap } from 'rxjs';
+import { catchError, from, map, switchMap } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { FirebaseError } from '@angular/fire/app';
 
@@ -36,6 +36,8 @@ export class AuthComponent {
     this.loginErrMessage = undefined;
     from(this.loadingController.create()).pipe(
       switchMap(lc => from(lc.present()).pipe(
+        switchMap(()=> this.dataService.callFunction()),
+        map(data => console.log('data', data)),
         switchMap(() => this.dataService.getMemberDetails(this.inputEmail)),
         switchMap(member => {
           if(member){
@@ -50,7 +52,7 @@ export class AuthComponent {
         }),
         catchError(err => {
           const fbe = err as FirebaseError;
-          console.log(fbe.code)
+          console.log('signIn catchError', fbe)
           switch(fbe.code){
             case 'auth/invalid-email':
               this.loginErrMessage = 'Invalid email';

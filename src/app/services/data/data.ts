@@ -2,6 +2,9 @@ import { Injectable } from '@angular/core';
 import { delay, Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 import * as Globals from '../../../globals';
+import { getApp } from '@angular/fire/app';
+import { provideFunctions, getFunctions, connectFunctionsEmulator, Functions, httpsCallable, httpsCallableFromURL } from '@angular/fire/functions';
+import { inject } from '@angular/core';
 
 @Injectable({
   providedIn: 'root'
@@ -10,6 +13,12 @@ import * as Globals from '../../../globals';
 export class DataService {
 
   private signedInMember!: Globals.Member | undefined;
+  private firebaseFunctions: Functions = inject(Functions);
+
+  public callFunction():Promise<any>{
+    const callable = httpsCallableFromURL(this.firebaseFunctions,  'https://helloworld-iw4pdarncq-uc.a.run.app/helloWorld');
+    return callable();
+  }
 
   private getMembers(): Observable<Globals.Member[]>{
     return of([
