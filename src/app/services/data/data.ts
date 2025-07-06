@@ -16,7 +16,8 @@ export class DataService {
   private firebaseFunctions: Functions = inject(Functions);
 
   public callFunction():Promise<any>{
-    const callable = httpsCallableFromURL(this.firebaseFunctions,  'https://helloworld-iw4pdarncq-uc.a.run.app/helloWorld');
+    const url = 'https://getglidexfiles-iw4pdarncq-uc.a.run.app';
+    const callable = httpsCallableFromURL(this.firebaseFunctions,  url);
     return callable();
   }
 
