@@ -1,5 +1,5 @@
 import * as functions from "firebase-functions";
-import {google} from "googleapis";
+import {drive_v3 as driveV3, google} from "googleapis";
 import {from, of} from "rxjs";
 import {catchError, map, switchMap} from "rxjs/operators";
 
@@ -10,7 +10,10 @@ exports.getGlidexFiles = functions.https.onRequest(
     })).pipe(
       switchMap((auth) => {
         const driveAPI = google.drive({version: "v3", auth});
-        return driveAPI.files.list();
+        const params: driveV3.Params$Resource$Files$List = {
+          q: "trashed=false",
+        };
+        return driveAPI.files.list(params);
       }),
       map((files) => {
         response.send(JSON.stringify({"data": files}));
