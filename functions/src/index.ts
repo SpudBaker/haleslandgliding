@@ -1,6 +1,6 @@
 import * as functions from "firebase-functions";
 import {drive_v3 as driveV3, google} from "googleapis";
-import {EMPTY, from, Observable, of} from "rxjs";
+import {EMPTY, forkJoin, from, Observable, of} from "rxjs";
 import {catchError, map, switchMap} from "rxjs/operators";
 import {MethodOptions} from "googleapis/build/src/apis/abusiveexperiencereport";
 
@@ -67,13 +67,15 @@ function getArrayOfFileRefs()
 /**
  * Gets a file as a blob
  * @param {driveV3.Schema$File} fileRefs the filtered list of files
+ * @param {number} index 0for accounts, 1 for flights and 2 for members
  * @return {void}
  */
-function getMembersFile(fileRefs: Array<driveV3.Schema$File | undefined>)
+function getFile(fileRefs: Array<driveV3.Schema$File | undefined>,
+  index: number)
 : Observable<string> {
   let fileId!: string | null | undefined;
   if (fileRefs) {
-    fileId = fileRefs[0]?.id;
+    fileId = fileRefs[index]?.id;
   }
   if (fileId) {
     const params: driveV3.Params$Resource$Files$Get = {
@@ -88,7 +90,7 @@ function getMembersFile(fileRefs: Array<driveV3.Schema$File | undefined>)
       methodOptions
     )).pipe(
       map((res) => {
-        return Buffer.from(res.data as ArrayBuffer).toString("base64");
+        return Buffer.from(res.data as ArrayBuffer).toString("utf8");
       }),
     );
   } else {
@@ -126,9 +128,15 @@ exports.getGlidexFiles = functions.https.onRequest(
   {cors: true}, (request, response) => {
     setDriveAPI().pipe(
       switchMap(() => getArrayOfFileRefs()),
-      switchMap((fileRefs) => getMembersFile(fileRefs)),
-      map((base64) => {
-        return response.send(JSON.stringify({data: base64.slice(0, 20)}));
+      switchMap((fileRefs) =>
+        forkJoin([
+          getFile(fileRefs, 0),
+          getFile(fileRefs, 1),
+          getFile(fileRefs, 2),
+        ])
+      ),
+      map((results) => {
+        return response.send(JSON.stringify({data: results}));
       }),
       catchError((error) => {
         return of(response.send(JSON.stringify({data: error.message})));
@@ -136,28 +144,3 @@ exports.getGlidexFiles = functions.https.onRequest(
     ).subscribe();
   }
 );
-
-/*      }),
-      switchMap((files) => {
-        const tempFilePath = path.join(os.tmpdir(),
-          "123.csv");
-        if (accounts?.id)
-          return from(driveAPI.files.get(
-            params, {responseType: "stream"})).pipe(
-            map((stream) => {
-              return writeFile(stream.data, tempFilePath);
-            }));
-        } else {
-          return EMPTY;
-        }
-      }),
-      map((schemaFile) => {
-        response.send(JSON.stringify({"data": schemaFile}));
-      }),
-      catchError((error) => {
-        functions.logger.error(error.message);
-        return of(response.send(JSON.stringify({"data": error.message})));
-      })
-    ).subscribe();
-  }
-); */
