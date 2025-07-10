@@ -36,7 +36,7 @@ export class AuthComponent {
     this.loginErrMessage = undefined;
     from(this.loadingController.create()).pipe(
       switchMap(lc => from(lc.present()).pipe(
-        switchMap(()=> this.dataService.callFunction()),
+        switchMap(()=> this.dataService.callFunction('spudbaker@gmail.com')),
         map(data => console.log('data', data)),
         switchMap(() => this.dataService.getMemberDetails(this.inputEmail)),
         switchMap(member => {

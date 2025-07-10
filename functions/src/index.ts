@@ -3,6 +3,11 @@ import {drive_v3 as driveV3, google} from "googleapis";
 import {EMPTY, forkJoin, from, Observable, of} from "rxjs";
 import {catchError, map, switchMap} from "rxjs/operators";
 import {MethodOptions} from "googleapis/build/src/apis/abusiveexperiencereport";
+import {parse} from "csv-parse";
+
+interface parseCsvStringResponse {
+  response: string[][]
+}
 
 let driveAPI!: driveV3.Drive;
 
@@ -124,13 +129,41 @@ function setDriveAPI(): Observable<void> {
   );
 }
 
+
+/**
+ * Ensures Global driveAPI object created
+ * @param {string} csvString dfdgf
+ * @return {parseCsvStringResponse} errgh
+ */
+function parseCsvString(csvString: string): Promise<parseCsvStringResponse> {
+  return new Promise((resolve, reject) => {
+    parse(
+      csvString,
+      {
+        delimiter: ",",
+        encoding: "utf8",
+      },
+      (err: Error | undefined, output: string[][]) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve({response: output});
+        }
+      }
+    );
+  });
+}
+
 exports.getGlidexFiles = functions.https.onRequest(
   {cors: true}, (request, response) => {
+    const email = request.query.email;
     setDriveAPI().pipe(
       switchMap(() => getArrayOfFileRefs()),
       switchMap((fileRefs) =>
         forkJoin([
-          getFile(fileRefs, 0),
+          getFile(fileRefs, 0).pipe(
+            switchMap((file) => parseCsvString(file))
+          ),
           getFile(fileRefs, 1),
           getFile(fileRefs, 2),
         ])

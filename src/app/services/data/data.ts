@@ -3,7 +3,7 @@ import { delay, Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 import * as Globals from '../../../globals';
 import { getApp } from '@angular/fire/app';
-import { provideFunctions, getFunctions, connectFunctionsEmulator, Functions, httpsCallable, httpsCallableFromURL } from '@angular/fire/functions';
+import { provideFunctions, getFunctions, connectFunctionsEmulator, Functions, httpsCallable, httpsCallableFromURL, HttpsCallableOptions } from '@angular/fire/functions';
 import { inject } from '@angular/core';
 
 @Injectable({
@@ -15,8 +15,8 @@ export class DataService {
   private signedInMember!: Globals.Member | undefined;
   private firebaseFunctions: Functions = inject(Functions);
 
-  public callFunction():Promise<any>{
-    const url = 'https://getglidexfiles-iw4pdarncq-uc.a.run.app';
+  public callFunction(email: string):Promise<any>{
+    const url = 'https://getglidexfiles-iw4pdarncq-uc.a.run.app?email='+email;
     const callable = httpsCallableFromURL(this.firebaseFunctions,  url);
     return callable();
   }
