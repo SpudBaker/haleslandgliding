@@ -47,44 +47,44 @@ export namespace AuthGuard {
 
 export class Member {
     readonly Ref: string;
-    readonly MemberType_ref: string;
-    readonly Membership_No: string;
+    readonly MemberType: string;
+    readonly MembershipNo: string;
     readonly Name: string;
     readonly Postcode: string;
-    readonly Tel_Mobile: string;
+    readonly TelMobile: string;
+    readonly TelHome: string;
     readonly EMail: string;
-    readonly Emergency_Contact: string;
-    readonly Date_Joined: Date;
-    readonly Membership_Expires: Date;
-    readonly Date_Lapsed: Date | undefined;
-    readonly Lapsed_Member: boolean;
-    readonly Medical_ValidTo: Date | undefined;
-    readonly AFR_Due: Date;
-    readonly RoundTrip_Mileage: number;
-    readonly ChargeTo_ref: string;
-    readonly BalLastMonthEnd: number;
-    readonly DateLastFlight: Date;
-    constructor(Ref: string, MemberType_ref: string, Membership_No: string, Name: string, Postcode: string, Tel_Mobile: string,
-        EMail: string, Emergency_Contact: string, Date_Joined: Date, Membership_Expires: Date, Date_Lapsed: Date | undefined,
-        Lapsed_Member: boolean, Medical_ValidTo: Date | undefined, AFR_Due: Date, RoundTrip_Mileage: number, ChargeTo_ref: string,
-        BalLastMonthEnd: number, DateLastFlight: Date){
+    readonly EmergencyContact: string;
+    readonly DateJoined: string;
+    readonly MembershipExpires: string;
+    readonly LapsedMember: boolean;
+    readonly MedicalValidTo: string;
+    readonly AFRDue: string;
+    readonly GiftAidMiles: number;
+    readonly ChargeToName: string;
+    readonly LatestBalance: number;
+    readonly DateLastFlight: string;
+    constructor(Ref: string, MemberType: string, MembershipNo: string, Name: string, Postcode: string, TelMobile: string,
+        TelHome: string, EMail: string, EmergencyContact: string, DateJoined: string, MembershipExpires: string,
+        LapsedMember: boolean, MedicalValidTo: string, AFRDue: string, GiftAidMiles: number, ChargeToName: string,
+        LatestBalance: number, DateLastFlight: string){
             this.Ref = Ref,
-            this.MemberType_ref = MemberType_ref;
-            this.Membership_No = Membership_No;
+            this.MemberType = MemberType;
+            this.MembershipNo = MembershipNo;
             this.Name = Name;
             this.Postcode = Postcode;
-            this.Tel_Mobile = Tel_Mobile;
+            this.TelMobile = TelMobile;
+            this.TelHome = TelHome
             this.EMail = EMail;
-            this.Emergency_Contact = Emergency_Contact;
-            this.Date_Joined = Date_Joined;
-            this.Membership_Expires = Membership_Expires;
-            this.Date_Lapsed = Date_Lapsed;
-            this.Lapsed_Member = Lapsed_Member;
-            this.Medical_ValidTo= Medical_ValidTo;
-            this.AFR_Due = AFR_Due;
-            this.RoundTrip_Mileage = RoundTrip_Mileage;
-            this.ChargeTo_ref = ChargeTo_ref;
-            this.BalLastMonthEnd = BalLastMonthEnd;
+            this.EmergencyContact = EmergencyContact;
+            this.DateJoined = DateJoined;
+            this.MembershipExpires = MembershipExpires;
+            this.LapsedMember = LapsedMember;
+            this.MedicalValidTo= MedicalValidTo;
+            this.AFRDue = AFRDue;
+            this.GiftAidMiles = GiftAidMiles;
+            this.ChargeToName = ChargeToName;
+            this.LatestBalance = LatestBalance;
             this.DateLastFlight = DateLastFlight;
     }
 }

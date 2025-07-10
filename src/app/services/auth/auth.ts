@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
-import { ActionCodeSettings, Auth, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendPasswordResetEmail,
-   sendEmailVerification, signOut, user, User, UserCredential } from '@angular/fire/auth';
+import { ActionCodeSettings, Auth, signInWithEmailAndPassword, sendPasswordResetEmail,
+   signOut, user, User, UserCredential } from '@angular/fire/auth';
 import { from, Observable, ReplaySubject } from 'rxjs';
 import { map } from 'rxjs/operators';
 

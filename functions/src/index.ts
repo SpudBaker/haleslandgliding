@@ -3,10 +3,81 @@ import {drive_v3 as driveV3, google} from "googleapis";
 import {EMPTY, forkJoin, from, Observable, of} from "rxjs";
 import {catchError, map, switchMap} from "rxjs/operators";
 import {MethodOptions} from "googleapis/build/src/apis/abusiveexperiencereport";
-import {parse} from "csv-parse";
+import {parse, Options} from "csv-parse";
+import {logger} from "firebase-functions";
 
 interface parseCsvStringResponse {
   response: string[][]
+}
+
+/**
+ * Class to represent a MGC member
+ */
+class Member {
+  readonly Ref: string;
+  readonly MemberType: string;
+  readonly MembershipNo: string;
+  readonly Name: string;
+  readonly Postcode: string;
+  readonly TelMobile: string;
+  readonly TelHome: string;
+  readonly EMail: string;
+  readonly EmergencyContact: string;
+  readonly DateJoined: string;
+  readonly MembershipExpires: string;
+  readonly LapsedMember: boolean;
+  readonly MedicalValidTo: string;
+  readonly AFRDue: string;
+  readonly GiftAidMiles: number;
+  readonly ChargeToName: string;
+  readonly LatestBalance: number;
+  readonly DateLastFlight: string;
+  /**
+  * Class to represent a MGC member
+  * @param {string} Ref
+  * @param {string} MemberType
+  * @param {string} MembershipNo
+  * @param {string} Name
+  * @param {string} Postcode
+  * @param {string} TelMobile
+  * @param {string} TelHome
+  * @param {string} EMail
+  * @param {string} EmergencyContact
+  * @param {string} DateJoined
+  * @param {string} MembershipExpires
+  * @param {boolean} LapsedMember
+  * @param {string} MedicalValidTo
+  * @param {string} AFRDue
+  * @param {string} GiftAidMiles
+  * @param {string} ChargeToName
+  * @param {number} LatestBalance
+  * @param {string} DateLastFlight
+  */
+  constructor(Ref: string, MemberType: string, MembershipNo: string,
+    Name: string, Postcode: string, TelMobile: string,
+    TelHome: string, EMail: string, EmergencyContact: string,
+    DateJoined: string, MembershipExpires: string, LapsedMember: boolean,
+    MedicalValidTo: string, AFRDue: string, GiftAidMiles: number,
+    ChargeToName: string, LatestBalance: number, DateLastFlight: string) {
+    this.Ref = Ref,
+    this.MemberType = MemberType;
+    this.MembershipNo = MembershipNo;
+    this.Name = Name;
+    this.Postcode = Postcode;
+    this.TelMobile = TelMobile;
+    this.TelHome = TelHome;
+    this.EMail = EMail;
+    this.EmergencyContact = EmergencyContact;
+    this.DateJoined = DateJoined;
+    this.MembershipExpires = MembershipExpires;
+    this.LapsedMember = LapsedMember;
+    this.MedicalValidTo= MedicalValidTo;
+    this.AFRDue = AFRDue;
+    this.GiftAidMiles = GiftAidMiles;
+    this.ChargeToName = ChargeToName;
+    this.LatestBalance = LatestBalance;
+    this.DateLastFlight = DateLastFlight;
+  }
 }
 
 let driveAPI!: driveV3.Drive;
@@ -137,12 +208,13 @@ function setDriveAPI(): Observable<void> {
  */
 function parseCsvString(csvString: string): Promise<parseCsvStringResponse> {
   return new Promise((resolve, reject) => {
+    const options: Options = {
+      delimiter: ",",
+      encoding: "utf8",
+    };
     parse(
       csvString,
-      {
-        delimiter: ",",
-        encoding: "utf8",
-      },
+      options,
       (err: Error | undefined, output: string[][]) => {
         if (err) {
           reject(err);
@@ -154,23 +226,61 @@ function parseCsvString(csvString: string): Promise<parseCsvStringResponse> {
   });
 }
 
+
+/**
+ * getmember details from email
+ * @param {string} email member email address (identity)
+ * @param {Array<driveV3.Schema$File | undefined>} fileRefs
+ * @return {Observable<Globals.Member>}
+ */
+function getMemberDetails(email: string,
+  fileRefs: Array<driveV3.Schema$File | undefined>)
+  : Observable<Member | void> {
+  if (fileRefs) {
+    return getFile(fileRefs, 2).pipe(
+      switchMap((utf8) => parseCsvString(utf8)),
+      map((csvArray) => {
+        let member!: Member | undefined;
+        for (let i=1; i < csvArray.response.length; i++) {
+          const row = csvArray.response[i];
+          if ((row[7]) == email) {
+            member = new Member(row[0], row[1],
+              row[2], row[3], row[4], row[5], row[6], row[7],
+              row[8], row[9], row[10], row[11] == "true" ? true : false,
+              row[12], row[13], +row[14], row[15], +row[16], row[17]);
+          }
+        }
+        if (member) {
+          return member;
+        } else {
+          return undefined;
+        }
+      })
+    );
+  } else {
+    return EMPTY;
+  }
+}
+
 exports.getGlidexFiles = functions.https.onRequest(
   {cors: true}, (request, response) => {
-    const email = request.query.email;
+    const email: string = request.query.email as string;
     setDriveAPI().pipe(
       switchMap(() => getArrayOfFileRefs()),
-      switchMap((fileRefs) =>
-        forkJoin([
-          getFile(fileRefs, 0).pipe(
-            switchMap((file) => parseCsvString(file))
-          ),
-          getFile(fileRefs, 1),
-          getFile(fileRefs, 2),
-        ])
-      ),
-      map((results) => {
-        return response.send(JSON.stringify({data: results}));
-      }),
+      switchMap((fileRefs) => getMemberDetails(email, fileRefs).pipe(
+        switchMap((member) => {
+          return forkJoin([
+            getFile(fileRefs, 1),
+            getFile(fileRefs, 2),
+          ]).pipe(
+            map((results) => {
+              return response.send(JSON.stringify(
+                {data: [results[0], results[1], member]}
+              ));
+            })
+          );
+        })
+      )),
       catchError((error) => {
         return of(response.send(JSON.stringify({data: error.message})));
       })
