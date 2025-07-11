@@ -9,7 +9,7 @@ import { catchError, switchMap } from 'rxjs/operators';
 import { FirebaseError } from '@angular/fire/app';
 import { FlightsComponent } from '../../components/nav-flights/nav-flights';
 import { AccountsComponent } from '../../components/nav-accounts/nav-accounts';
-import * as Globals from '../../../globals';
+import * as Globals from '../../../mgc-globals';
 
 @Component({
   selector: 'app-user-page',
@@ -20,7 +20,7 @@ import * as Globals from '../../../globals';
 export class UserPage {
 
   public signingOut = false;
-  public member?: Globals.Member;
+  public member?: Globals.MemberFrontEnd;
 
   constructor(private authService: AuthService, private dataService: DataService, private loadingController: LoadingController,
     private navController: NavController) {

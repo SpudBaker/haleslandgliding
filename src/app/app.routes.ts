@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { AuthGuard } from 'src/globals';
+import { AuthGuard } from 'src/mgc-globals';
 
 export const routes: Routes = [
   {

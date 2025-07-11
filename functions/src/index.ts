@@ -4,16 +4,84 @@ import {EMPTY, forkJoin, from, Observable, of} from "rxjs";
 import {catchError, map, switchMap} from "rxjs/operators";
 import {MethodOptions} from "googleapis/build/src/apis/abusiveexperiencereport";
 import {parse, Options} from "csv-parse";
-import {logger} from "firebase-functions";
 
 interface parseCsvStringResponse {
   response: string[][]
 }
 
 /**
+ * Class to represent a Flight
+ */
+/* class Flight {
+  readonly Ref: string;
+  readonly FlightType: string;
+  readonly Glider: string;
+  readonly P1Ref: string;
+  readonly P2Ref: string;
+  readonly TakeOffTime: string;
+  readonly LandingTime: string;
+  readonly MoreInfo: string;
+  readonly Comment: string;
+  readonly Charge: string;
+  readonly TugRef: string;
+  readonly LaunchType: string;
+  readonly ReleaseHeight: string;
+  readonly Charged: string;
+  readonly TugPilotRef: string;
+  readonly ChargeLaunch: string;
+  readonly ChargeTime: string;
+  readonly ChargeTug: string;
+  /**
+  * Class constructor
+  * @param {string} Ref
+  * @param {string} FlightType
+  * @param {string} Glider
+  * @param {string} P1Ref
+  * @param {string} P2Ref
+  * @param {string} TakeOffTime
+  * @param {string} LandingTime
+  * @param {string} MoreInfo
+  * @param {string} Comment
+  * @param {string} Charge
+  * @param {string} TugRef
+  * @param {string} LaunchType
+  * @param {string} ReleaseHeight
+  * @param {string} Charged
+  * @param {string} TugPilotRef
+  * @param {string} ChargeLaunch
+  * @param {string} ChargeTime
+  * @param {string} ChargeTug
+  */
+/* constructor(Ref: string, FlightType: string, Glider: string, P1Ref: string,
+    P2Ref: string, TakeOffTime: string, LandingTime: string, MoreInfo: string,
+    Comment: string, Charge: string, TugRef: string, LaunchType: string,
+    ReleaseHeight: string, Charged: string, TugPilotRef: string,
+    ChargeLaunch: string, ChargeTime: string, ChargeTug: string) {
+    this.Ref = Ref;
+    this.FlightType = FlightType;
+    this.Glider = Glider;
+    this.P1Ref = P1Ref;
+    this.P2Ref = P2Ref;
+    this.TakeOffTime = TakeOffTime;
+    this.LandingTime = LandingTime;
+    this.MoreInfo = MoreInfo;
+    this.Comment = Comment;
+    this.Charge = Charge;
+    this.TugRef = TugRef;
+    this.LaunchType = LaunchType;
+    this.ReleaseHeight = ReleaseHeight;
+    this.Charged = Charged;
+    this.TugPilotRef = TugPilotRef;
+    this.ChargeLaunch = ChargeLaunch;
+    this.ChargeTime = ChargeTime;
+    this.ChargeTug = ChargeTug;
+  }
+}*/
+
+/**
  * Class to represent a MGC member
  */
-class Member {
+class MemberBackEnd {
   readonly Ref: string;
   readonly MemberType: string;
   readonly MembershipNo: string;
@@ -33,7 +101,7 @@ class Member {
   readonly LatestBalance: number;
   readonly DateLastFlight: string;
   /**
-  * Class to represent a MGC member
+  * Class constructor
   * @param {string} Ref
   * @param {string} MemberType
   * @param {string} MembershipNo
@@ -141,7 +209,7 @@ function getArrayOfFileRefs()
 }
 
 /**
- * Gets a file as a blob
+ * Gets a file as a UTF8 string
  * @param {driveV3.Schema$File} fileRefs the filtered list of files
  * @param {number} index 0for accounts, 1 for flights and 2 for members
  * @return {void}
@@ -182,7 +250,9 @@ function setDriveAPI(): Observable<void> {
   return of("").pipe(
     switchMap(() => {
       if (driveAPI) {
-        return of();
+        return of("").pipe(
+          map(() => undefined)
+        );
       } else {
         return from(google.auth.getClient({
           scopes: ["https://www.googleapis.com/auth/drive"],
@@ -235,16 +305,16 @@ function parseCsvString(csvString: string): Promise<parseCsvStringResponse> {
  */
 function getMemberDetails(email: string,
   fileRefs: Array<driveV3.Schema$File | undefined>)
-  : Observable<Member | void> {
+  : Observable<MemberBackEnd | void> {
   if (fileRefs) {
     return getFile(fileRefs, 2).pipe(
       switchMap((utf8) => parseCsvString(utf8)),
       map((csvArray) => {
-        let member!: Member | undefined;
+        let member!: MemberBackEnd | undefined;
         for (let i=1; i < csvArray.response.length; i++) {
           const row = csvArray.response[i];
           if ((row[7]) == email) {
-            member = new Member(row[0], row[1],
+            member = new MemberBackEnd(row[0], row[1],
               row[2], row[3], row[4], row[5], row[6], row[7],
               row[8], row[9], row[10], row[11] == "true" ? true : false,
               row[12], row[13], +row[14], row[15], +row[16], row[17]);
@@ -264,16 +334,19 @@ function getMemberDetails(email: string,
 
 exports.getGlidexFiles = functions.https.onRequest(
   {cors: true}, (request, response) => {
+    functions.logger.info("STARTING FUNCTION");
     const email: string = request.query.email as string;
     setDriveAPI().pipe(
       switchMap(() => getArrayOfFileRefs()),
       switchMap((fileRefs) => getMemberDetails(email, fileRefs).pipe(
         switchMap((member) => {
+          functions.logger.info("MEMBER", member);
           return forkJoin([
             getFile(fileRefs, 1),
             getFile(fileRefs, 2),
           ]).pipe(
             map((results) => {
+              functions.logger.info("RETURNING results : ", results);
               return response.send(JSON.stringify(
                 {data: [results[0], results[1], member]}
               ));

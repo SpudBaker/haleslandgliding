@@ -45,7 +45,7 @@ export namespace AuthGuard {
     }
 }
 
-export class Member {
+export class MemberFrontEnd {
     readonly Ref: string;
     readonly MemberType: string;
     readonly MembershipNo: string;
@@ -55,19 +55,19 @@ export class Member {
     readonly TelHome: string;
     readonly EMail: string;
     readonly EmergencyContact: string;
-    readonly DateJoined: string;
-    readonly MembershipExpires: string;
+    readonly DateJoined: Date;
+    readonly MembershipExpires: Date;
     readonly LapsedMember: boolean;
-    readonly MedicalValidTo: string;
-    readonly AFRDue: string;
+    readonly MedicalValidTo: Date;
+    readonly AFRDue: Date;
     readonly GiftAidMiles: number;
     readonly ChargeToName: string;
     readonly LatestBalance: number;
-    readonly DateLastFlight: string;
+    readonly DateLastFlight: Date;
     constructor(Ref: string, MemberType: string, MembershipNo: string, Name: string, Postcode: string, TelMobile: string,
-        TelHome: string, EMail: string, EmergencyContact: string, DateJoined: string, MembershipExpires: string,
-        LapsedMember: boolean, MedicalValidTo: string, AFRDue: string, GiftAidMiles: number, ChargeToName: string,
-        LatestBalance: number, DateLastFlight: string){
+        TelHome: string, EMail: string, EmergencyContact: string, DateJoined: Date, MembershipExpires: Date,
+        LapsedMember: boolean, MedicalValidTo: Date, AFRDue: Date, GiftAidMiles: number, ChargeToName: string,
+        LatestBalance: number, DateLastFlight: Date){
             this.Ref = Ref,
             this.MemberType = MemberType;
             this.MembershipNo = MembershipNo;
