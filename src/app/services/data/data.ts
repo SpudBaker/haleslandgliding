@@ -35,7 +35,7 @@ export class DataService {
         this.initiated = true;
         const data = d.data as Array<any>;
         console.log(data);
-        this.accounts$.next(this.extractAccounts(data[0]));
+        this.accounts$.next(this.extractAccounts(data[1]));
         this.flights$.next(this.extractFlights(data[0]));
         this.member$.next(this.extractMember(data[2]));
         this.alertController.dismiss();
@@ -43,11 +43,14 @@ export class DataService {
     );
   }
 
-  private extractAccounts(data: Array<string>): Globals.TransactionFrontEnd[] {
+ private extractAccounts(data: Object): Globals.TransactionFrontEnd[] {
     const arr = new Array<Globals.TransactionFrontEnd>();
-    data.forEach(t => {
-      arr.push(new Globals.TransactionFrontEnd(t[0],t[1],new Date(t[2]), t[3], t[4], t[5], t[6], t[7]));
-    })
+    const flights = data as GlobalsBackEnd.TransactionBackEnd[];
+    flights.forEach(t => {
+      arr.push(new Globals.TransactionFrontEnd(t.Reference, t.TransactionType,
+        new Date(t.TransactionDate), t.MemberRef, t.Member, t.Charges, t.Payment,
+        t.Notes));
+    });
     return arr;
   }
 
