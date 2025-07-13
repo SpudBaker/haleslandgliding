@@ -10,7 +10,6 @@ import { catchError, map, switchMap } from 'rxjs/operators';
 import { FirebaseError } from '@angular/fire/app';
 import { FlightsComponent } from '../../components/nav-flights/nav-flights';
 import { AccountsComponent } from '../../components/nav-accounts/nav-accounts';
-import * as Globals from '../../../mgc-globals';
 
 @Component({
   selector: 'app-user-page',

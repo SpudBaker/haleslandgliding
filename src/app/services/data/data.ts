@@ -36,7 +36,7 @@ export class DataService {
         const data = d.data as Array<any>;
         console.log(data);
         this.accounts$.next(this.extractAccounts(data[0]));
-        this.flights$.next(this.extractFlights(data[1]));
+        this.flights$.next(this.extractFlights(data[0]));
         this.member$.next(this.extractMember(data[2]));
         this.alertController.dismiss();
       })
@@ -51,11 +51,14 @@ export class DataService {
     return arr;
   }
 
-  private extractFlights(data: Array<string>): Globals.FlightFrontEnd[] {
+  private extractFlights(data: Object): Globals.FlightFrontEnd[] {
     const arr = new Array<Globals.FlightFrontEnd>();
-    data.forEach(t => {
-      arr.push(new Globals.FlightFrontEnd(t[0],t[1],t[2],t[3],new Date(t[4]),t[5],t[6],t[7],t[8],t[9],t[10],t[11],t[12]));
-    })
+    const flights = data as GlobalsBackEnd.FlightBackEnd[];
+    flights.forEach(f => {
+      arr.push(new Globals.FlightFrontEnd(f.Ref, f.P1Ref, f.P2Ref, f.ChargeToRef,
+        new Date(f.FlightDate), f.Glider, f.TakeOff, f.Duration, f.Type, f.FlightType,
+        f.P1, f.P2,f.Notes));
+    });
     return arr;
   }
   
