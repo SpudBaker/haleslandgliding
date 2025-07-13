@@ -120,3 +120,41 @@ export class MemberBackEnd {
     this.DateLastFlight = DateLastFlight;
   }
 }
+
+/**
+ ** Class to represent a Flight
+ */
+export class TransactionBackEnd {
+  readonly Reference: string;
+  readonly TransactionType: string;
+  readonly TransactionDate: string;
+  readonly MemberRef: string;
+  readonly Member: string;
+  readonly Charges: string;
+  readonly Payment: string;
+  readonly Notes: string;
+  /**
+  * Class constructor
+  * @param {string} Reference
+  * @param {string} TransactionType
+  * @param {string} TransactionDate
+  * @param {string} MemberRef
+  * @param {string} Member
+  * @param {string} Charges
+  * @param {string} Payment
+  * @param {string} Notes
+  */
+  constructor(Reference: string, TransactionType: string,
+    TransactionDate: string, MemberRef: string, Member: string, Charges: string,
+    Payment: string, Notes: string) {
+    this.Reference = Reference;
+    this.TransactionType = TransactionType;
+    this.TransactionDate = TransactionDate;
+    this.MemberRef = MemberRef;
+    this.Member = Member;
+    this.Charges = Charges;
+    this.Payment = Payment;
+    this.TransactionDate = TransactionDate;
+    this.Notes = Notes;
+  }
+}

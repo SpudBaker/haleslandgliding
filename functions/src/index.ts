@@ -4,7 +4,7 @@ import {EMPTY, forkJoin, from, Observable, of} from "rxjs";
 import {catchError, map, switchMap} from "rxjs/operators";
 import {MethodOptions} from "googleapis/build/src/apis/abusiveexperiencereport";
 import {parse, Options} from "csv-parse";
-import {FlightBackEnd, MemberBackEnd} from "./classes";
+import {FlightBackEnd, MemberBackEnd, TransactionBackEnd} from "./classes";
 interface parseCsvStringResponse {
   response: string[][]
 }
@@ -157,7 +157,7 @@ function parseCsvString(csvString: string): Promise<parseCsvStringResponse> {
 }
 
 /**
- * getmember details from email
+ * get member details from an email
  * @param {string} email member email address (identity)
  * @param {Array<driveV3.Schema$File | undefined>} fileRefs
  * @return {Observable<Globals.Member>}
@@ -192,10 +192,10 @@ function getMemberDetails(email: string,
 }
 
 /**
- * getmember details from email
+ * get flights for a member
  * @param {string} memberID member id (identity)
  * @param {Array<driveV3.Schema$File | undefined>} fileRefs
- * @return {Observable<Globals.Member>}
+ * @return {Observable<FlightBackEnd>}
  */
 function getFlightDetails(memberID: string,
   fileRefs: Array<driveV3.Schema$File | undefined>)
@@ -222,6 +222,37 @@ function getFlightDetails(memberID: string,
   }
 }
 
+/**
+ * get transactions for a member
+ * @param {string} memberID member id (identity)
+ * @param {Array<driveV3.Schema$File | undefined>} fileRefs
+ * @return {Observable<TransactionBackEnd>}
+ */
+function getTransactions(memberID: string,
+  fileRefs: Array<driveV3.Schema$File | undefined>)
+  : Observable< TransactionBackEnd[]> {
+  const arrTransactions = new Array<TransactionBackEnd>();
+  if (fileRefs) {
+    return getFile(fileRefs, 0).pipe(
+      switchMap((utf8) => parseCsvString(utf8)),
+      map((csvArray) => {
+        functions.logger.info("GET TRANSACTION() - member id", memberID);
+        for (let i=1; i < csvArray.response.length; i++) {
+          const row = csvArray.response[i];
+          functions.logger.info("GET TRANSACTION() - row[3]", row[4]);
+          if ((row[3]) == memberID) {
+            arrTransactions.push(new TransactionBackEnd(row[0], row[1],
+              row[2], row[3], row[4], row[5], row[6], row[7]));
+          }
+        }
+        return arrTransactions;
+      })
+    );
+  } else {
+    return of(arrTransactions);
+  }
+}
+
 exports.getGlidexFiles = functions.https.onRequest(
   {cors: true}, (request, response) => {
     const email: string = request.query.email as string;
@@ -232,7 +263,7 @@ exports.getGlidexFiles = functions.https.onRequest(
           if (member) {
             return forkJoin([
               getFlightDetails(member.Ref, fileRefs),
-              getFile(fileRefs, 2),
+              getTransactions(member.Ref, fileRefs),
             ]).pipe(
               map((results) => {
                 return response.send(JSON.stringify(
