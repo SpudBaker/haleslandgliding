@@ -50,7 +50,19 @@
                             <ion-col size="6">
                                 <ion-item>
                                     <ion-label>
-                                        <h3>AFR_Due:</h3>
+                                        <h3>Name:</h3>
+                                        {{member.Name}}
+                                    </ion-label>
+                                </ion-item>
+                            </ion-col>
+                            <ion-col size="3"></ion-col>
+                        </ion-row>
+                        <ion-row>
+                            <ion-col size="3"></ion-col>
+                            <ion-col size="6">
+                                <ion-item>
+                                    <ion-label>
+                                        <h3>AFR due:</h3>
                                         {{member.AFRDue.toLocaleDateString()}}
                                     </ion-label>
                                 </ion-item>
@@ -62,19 +74,7 @@
                             <ion-col size="6">
                                 <ion-item>
                                     <ion-label>
-                                        <h3>Balance last month end:</h3>
-                                        {{member.LatestBalance}}
-                                    </ion-label>
-                                </ion-item>
-                            </ion-col>
-                            <ion-col size="3"></ion-col>
-                        </ion-row>
-                        <ion-row>
-                            <ion-col size="3"></ion-col>
-                            <ion-col size="6">
-                                <ion-item>
-                                    <ion-label>
-                                        <h3>Charged To Ref:</h3>
+                                        <h3>Charge to name:</h3>
                                         {{member.ChargeToName}}
                                     </ion-label>
                                 </ion-item>
@@ -86,8 +86,164 @@
                             <ion-col size="6">
                                 <ion-item>
                                     <ion-label>
-                                        <h3>Date Last Flight:</h3>
+                                        <h3>Date joined:</h3>
+                                        {{member.DateJoined.toLocaleDateString()}}
+                                    </ion-label>
+                                </ion-item>
+                            </ion-col>
+                            <ion-col size="3"></ion-col>
+                        </ion-row>
+                        <ion-row>
+                            <ion-col size="3"></ion-col>
+                            <ion-col size="6">
+                                <ion-item>
+                                    <ion-label>
+                                        <h3>Date last flight:</h3>
                                         {{member.DateLastFlight.toLocaleDateString()}}
+                                    </ion-label>
+                                </ion-item>
+                            </ion-col>
+                            <ion-col size="3"></ion-col>
+                        </ion-row>
+                        <ion-row>
+                            <ion-col size="3"></ion-col>
+                            <ion-col size="6">
+                                <ion-item>
+                                    <ion-label>
+                                        <h3>Emergency contact:</h3>
+                                        {{member.EmergencyContact}}
+                                    </ion-label>
+                                </ion-item>
+                            </ion-col>
+                            <ion-col size="3"></ion-col>
+                        </ion-row>
+                        <ion-row>
+                            <ion-col size="3"></ion-col>
+                            <ion-col size="6">
+                                <ion-item>
+                                    <ion-label>
+                                        <h3>Gift aid miles:</h3>
+                                        {{member.GiftAidMiles}}
+                                    </ion-label>
+                                </ion-item>
+                            </ion-col>
+                            <ion-col size="3"></ion-col>
+                        </ion-row>
+                        <ion-row>
+                            <ion-col size="3"></ion-col>
+                            <ion-col size="6">
+                                <ion-item>
+                                    <ion-label>
+                                        <h3>Lapsed member:</h3>
+                                        {{member.LapsedMember}}
+                                    </ion-label>
+                                </ion-item>
+                            </ion-col>
+                            <ion-col size="3"></ion-col>
+                        </ion-row>
+                        <ion-row>
+                            <ion-col size="3"></ion-col>
+                            <ion-col size="6">
+                                <ion-item>
+                                    <ion-label>
+                                        <h3>Latest balance:</h3>
+                                        {{member.LatestBalance}}
+                                    </ion-label>
+                                </ion-item>
+                            </ion-col>
+                            <ion-col size="3"></ion-col>
+                        </ion-row>
+                        <ion-row>
+                            <ion-col size="3"></ion-col>
+                            <ion-col size="6">
+                                <ion-item>
+                                    <ion-label>
+                                        <h3>Medical valid to:</h3>
+                                        {{member.MedicalValidTo.toLocaleDateString()}}
+                                    </ion-label>
+                                </ion-item>
+                            </ion-col>
+                            <ion-col size="3"></ion-col>
+                        </ion-row>
+                        <ion-row>
+                            <ion-col size="3"></ion-col>
+                            <ion-col size="6">
+                                <ion-item>
+                                    <ion-label>
+                                        <h3>Member Type:</h3>
+                                        {{member.MemberType}}
+                                    </ion-label>
+                                </ion-item>
+                            </ion-col>
+                            <ion-col size="3"></ion-col>
+                        </ion-row>
+                        <ion-row>
+                            <ion-col size="3"></ion-col>
+                            <ion-col size="6">
+                                <ion-item>
+                                    <ion-label>
+                                        <h3>MembershipExpires:</h3>
+                                        {{member.MembershipExpires.toLocaleDateString()}}
+                                    </ion-label>
+                                </ion-item>
+                            </ion-col>
+                            <ion-col size="3"></ion-col>
+                        </ion-row>
+                        <ion-row>
+                            <ion-col size="3"></ion-col>
+                            <ion-col size="6">
+                                <ion-item>
+                                    <ion-label>
+                                        <h3>Membership No:</h3>
+                                        {{member.MembershipNo}}
+                                    </ion-label>
+                                </ion-item>
+                            </ion-col>
+                            <ion-col size="3"></ion-col>
+                        </ion-row>
+                        <ion-row>
+                            <ion-col size="3"></ion-col>
+                            <ion-col size="6">
+                                <ion-item>
+                                    <ion-label>
+                                        <h3>Postcode:</h3>
+                                        {{member.Postcode}}
+                                    </ion-label>
+                                </ion-item>
+                            </ion-col>
+                            <ion-col size="3"></ion-col>
+                        </ion-row>
+                        <ion-row>
+                            <ion-col size="3"></ion-col>
+                            <ion-col size="6">
+                                <ion-item>
+                                    <ion-label>
+                                        <h3>Ref:</h3>
+                                        {{member.Ref}}
+                                    </ion-label>
+                                </ion-item>
+                            </ion-col>
+                            <ion-col size="3"></ion-col>
+                        </ion-row>
+                        <ion-row>
+                            <ion-col size="3"></ion-col>
+                            <ion-col size="6">
+                                <ion-item>
+                                    <ion-label>
+                                        <h3>Tel home:</h3>
+                                        {{member.TelHome}}
+                                    </ion-label>
+                                </ion-item>
+                            </ion-col>
+                            <ion-col size="3"></ion-col>
+                        </ion-row>
+                        <ion-row>
+                            <ion-col size="3"></ion-col>
+                            <ion-col size="6">
+                                <ion-item>
+                                    <ion-label>
+                                        <h3>Tel mobile:</h3>
+                                        {{member.TelMobile}}
                                     </ion-label>
                                 </ion-item>
                             </ion-col>

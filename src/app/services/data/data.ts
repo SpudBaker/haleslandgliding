@@ -3,6 +3,7 @@ import { AlertController, AlertOptions } from '@ionic/angular/standalone';
 import { Observable, of, ReplaySubject} from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 import * as Globals from '../../../mgc-globals';
+import * as GlobalsBackEnd from '../../../../functions/src/classes';
 import { Functions, httpsCallableFromURL } from '@angular/fire/functions';
 import { inject } from '@angular/core';
 import { from } from 'rxjs/internal/observable/from';
@@ -58,10 +59,13 @@ export class DataService {
     return arr;
   }
   
-  private extractMember(t: Array<string>): Globals.MemberFrontEnd {
-    return new Globals.MemberFrontEnd(t[0],t[1],t[2],t[3],t[4],t[5],t[6],t[7],t[8],
-      new Date(t[9]),new Date(t[10]),(t[11] as string)=="true"?true:false,
-      new Date(t[12]), new Date(t[13]), +t[14], t[15], +t[16], new Date(t[17]));
+  private extractMember(data: Object): Globals.MemberFrontEnd {
+    const m = data as GlobalsBackEnd.MemberBackEnd;
+    return new Globals.MemberFrontEnd(m.Ref, m.MemberType, m.MembershipNo, m.Name,
+      m.Postcode, m.TelMobile, m.TelHome, m.EMail, m.EmergencyContact, new Date(m.DateJoined),
+      new Date(m.MembershipExpires), m.LapsedMember, new Date(m.MedicalValidTo),
+      new Date(m.AFRDue), m.GiftAidMiles, m.ChargeToName, +m.LatestBalance, new Date(m.DateLastFlight)
+    );
   }
 
   public resetLogOut(){
