@@ -1,0 +1,26 @@
+<ion-grid>
+    <ion-row>
+        <ion-col size="4"></ion-col>
+        <ion-col size="8">
+            <ion-icon name="cash-outline" (click)="navAccountsPage()"></ion-icon>
+        </ion-col>
+    </ion-row>
+    <ion-row>
+        <ion-col size="4"></ion-col>
+        <ion-col size="8">
+            <ion-icon name="airplane-outline" (click)="navFlightsPage()"></ion-icon>
+        </ion-col>
+    </ion-row>
+        <ion-row>
+        <ion-col size="4"></ion-col>
+        <ion-col size="8">
+            <ion-icon name="person-circle-outline" (click)="navUserPage()"></ion-icon>
+        </ion-col>
+    </ion-row>
+    <ion-row>
+    <ion-col align="left">
+        <br/>
+        <ion-button (click)="signOut()" [disabled]="signingOut" expand="block" color="primary">Sign Out</ion-button>
+    </ion-col>
+</ion-row>
+</ion-grid>

@@ -1,8 +1,27 @@
 import { Routes } from '@angular/router';
-import { AuthGuard } from 'src/mgc-globals';
+import { ShellPage } from './pages/shell/shell.page';
+import { FlightsComponent } from './components/flights/flights.component';
+import { AccountsComponent } from './components/accounts/accounts.component';
+import { UserComponent } from './components/user/user.component';
+// import { AuthGuard } from 'src/mgc-globals';
 
 export const routes: Routes = [
+  { 
+    path: 'shell',
+    component: ShellPage,
+    children: [
+      {path: 'accounts', component: AccountsComponent},
+      {path: 'flights', component: FlightsComponent},
+      {path: 'user', component: UserComponent},
+      {path: '', component: AccountsComponent}
+    ]
+  },
   {
+    path: '',
+    redirectTo: 'shell',
+    pathMatch: 'full',
+  }
+ /* {
     path: 'accounts',
     canActivate: [AuthGuard.canActivateLoggedIn],
     loadComponent: () => import('./pages/accounts/accounts.page').then(m => m.AccountsPage)
@@ -26,5 +45,5 @@ export const routes: Routes = [
     path: '',
     redirectTo: 'home',
     pathMatch: 'full',
-  },
+  },*/
 ];
