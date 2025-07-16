@@ -23,7 +23,7 @@ export namespace AuthGuard {
                         map(() => true)
                     )
                 } else {
-                    navController.navigateRoot('home');
+                    navController.navigateRoot('shell/login');
                 return of(false);
                 }
             })
@@ -41,7 +41,7 @@ export namespace AuthGuard {
                 if(!user?.email){
                     return of(true);
                 } else {
-                    navController.navigateRoot('user');
+                    navController.navigateRoot('shell/user');
                 return of(false);
                 }
             })

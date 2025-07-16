@@ -44,7 +44,7 @@ export class AuthComponent {
             return this.dataService.callFunction(res.user.email).pipe(
               switchMap(() => this.dataService.member$),
               switchMap(() => ac.dismiss()),
-              switchMap(() => this.navController.navigateRoot('user'))
+              switchMap(() => this.navController.navigateRoot('shell/user'))
             );
           } else {
             return from(ac.dismiss()).pipe(

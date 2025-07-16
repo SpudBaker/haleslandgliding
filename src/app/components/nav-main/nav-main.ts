@@ -23,7 +23,6 @@ export class NavMainComponent {
   private dataService = inject(DataService);
   private loadingController = inject(LoadingController);
   private navController = inject(NavController);
-  public signingOut = false;
   public user$: ReplaySubject<User | null>;
 
   constructor(){
@@ -44,15 +43,13 @@ export class NavMainComponent {
   }
 
   public signOut(){
-    this.signingOut = true;
     from(this.loadingController.create()).pipe(
       switchMap(lc => from(lc.present()).pipe(
         switchMap(() => this.authService.signOut()),
         map(() => this.dataService.resetLogOut()),
         switchMap(() => lc.dismiss()),
-        switchMap(() => this.navController.navigateRoot('home')),
+        switchMap(() => this.navController.navigateRoot('shell/login')),
         catchError(err => {
-          this.signingOut = false
           const fbe = err as FirebaseError;
           switch(fbe.code){
             }
