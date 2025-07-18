@@ -56,7 +56,7 @@ export class FlightFrontEnd {
   readonly Ref: string;
   readonly P1Ref: string;
   readonly P2Ref: string;
-  readonly ChargeToRef: string;
+  readonly ChargeToText: string;
   readonly FlightDate: Date;
   readonly Glider: string;
   readonly TakeOff: string;
@@ -66,12 +66,13 @@ export class FlightFrontEnd {
   readonly P1: string;
   readonly P2: string;
   readonly Notes: string;
+  readonly ChargeToRef: string;
   /**
   * Class constructor
   * @param {string} Ref
   * @param {string} P1Ref
   * @param {string} P2Ref
-  * @param {string} ChargeToRef
+  * @param {string} ChargeToText
   * @param {Date} FlightDate
   * @param {string} Glider
   * @param {string} TakeOff
@@ -81,15 +82,16 @@ export class FlightFrontEnd {
   * @param {string} P1
   * @param {string} P2
   * @param {string} Notes
+  * @param {string} ChargeToRef
   */
-  constructor(Ref: string, P1Ref: string, P2Ref: string, ChargeToRef: string,
+  constructor(Ref: string, P1Ref: string, P2Ref: string, ChargeToText: string,
     FlightDate: Date, Glider: string, TakeOff: string, Duration: string,
     Type: string, FlightType: string, P1: string, P2: string,
-    Notes: string) {
+    Notes: string, ChargeToRef: string) {
     this.Ref = Ref;
     this.P1Ref = P1Ref;
     this.P2Ref = P2Ref;
-    this.ChargeToRef = ChargeToRef;
+    this.ChargeToText = ChargeToText;
     this.FlightDate = FlightDate;
     this.Glider = Glider;
     this.TakeOff = TakeOff;
@@ -99,6 +101,7 @@ export class FlightFrontEnd {
     this.P1 = P1;
     this.P2 = P2;
     this.Notes = Notes;
+    this.ChargeToRef = ChargeToRef
   }
 }
 

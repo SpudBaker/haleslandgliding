@@ -27,7 +27,7 @@ export class NavMainComponent {
 
   constructor(){
     this.user$ = this.authService.user$;
-       addIcons({airplaneOutline, cashOutline, personCircleOutline});
+    addIcons({airplaneOutline, cashOutline, personCircleOutline});
   }
 
   public navAccountsPage(): void{

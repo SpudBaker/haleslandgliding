@@ -58,9 +58,9 @@ export class DataService {
     const arr = new Array<Globals.FlightFrontEnd>();
     const flights = data as GlobalsBackEnd.FlightBackEnd[];
     flights.forEach(f => {
-      arr.push(new Globals.FlightFrontEnd(f.Ref, f.P1Ref, f.P2Ref, f.ChargeToRef,
+      arr.push(new Globals.FlightFrontEnd(f.Ref, f.P1Ref, f.P2Ref, f.ChargeToText,
         new Date(f.FlightDate), f.Glider, f.TakeOff, f.Duration, f.Type, f.FlightType,
-        f.P1, f.P2,f.Notes));
+        f.P1, f.P2,f.Notes, f.ChargeToRef));
     });
     return arr;
   }

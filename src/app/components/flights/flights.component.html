@@ -12,6 +12,24 @@
                                 <h2><b>{{flight.FlightDate.toLocaleDateString()}}</b></h2>
                                 <ion-grid>
                                     <ion-row>
+                                        <ion-col size="4">
+                                            <ion-item lines="none">
+                                                <ion-label>
+                                                    <h3>F/Ref:</h3>
+                                                    {{flight.Ref}}
+                                                </ion-label>
+                                            </ion-item>
+                                        </ion-col>
+                                        <ion-col size="8">
+                                            <ion-item lines="none">
+                                            <ion-label>
+                                                    <h3>Flight Type:</h3>
+                                                    {{flight.FlightType}}
+                                                </ion-label>
+                                            </ion-item>
+                                        </ion-col>
+                                    </ion-row>
+                                    <ion-row>
                                         <ion-col>
                                             <ion-item lines="none">
                                                 <ion-label>
@@ -57,22 +75,14 @@
                                         <ion-col>
                                             <ion-item lines="none">
                                             <ion-label>
-                                                    <h3>Flight Type:</h3>
-                                                    {{flight.FlightType}}
+                                                    <h3>Charge To:</h3>
+                                                    {{flight.ChargeToText}}
                                                 </ion-label>
                                             </ion-item>
                                         </ion-col>
                                     </ion-row>
                                     <ion-row>
-                                        <ion-col size="3">
-                                            <ion-item lines="none">
-                                                <ion-label>
-                                                    <h3>Charge to ref:</h3>
-                                                    {{flight.ChargeToRef}}
-                                                </ion-label>
-                                            </ion-item>
-                                        </ion-col>
-                                        <ion-col size="9">
+                                        <ion-col size="12">
                                             <ion-item lines="none">
                                             <ion-label>
                                                     <h3>Notes:</h3>
