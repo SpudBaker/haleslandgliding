@@ -33,7 +33,19 @@
                         <ion-col size="6">
                             <ion-item>
                                 <ion-label>
-                                    <h3>AFR due:</h3>
+                                    <h3>Latest balance:</h3>
+                                    {{member.LatestBalance | currency:"GBP"}}
+                                </ion-label>
+                            </ion-item>
+                        </ion-col>
+                        <ion-col size="3"></ion-col>
+                    </ion-row>
+                    <ion-row>
+                        <ion-col size="3"></ion-col>
+                        <ion-col size="6">
+                            <ion-item>
+                                <ion-label>
+                                    <h3>Next flying checks due:</h3>
                                     {{member.AFRDue.toLocaleDateString()}}
                                 </ion-label>
                             </ion-item>
@@ -105,30 +117,6 @@
                         <ion-col size="6">
                             <ion-item>
                                 <ion-label>
-                                    <h3>Lapsed member:</h3>
-                                    {{member.LapsedMember}}
-                                </ion-label>
-                            </ion-item>
-                        </ion-col>
-                        <ion-col size="3"></ion-col>
-                    </ion-row>
-                    <ion-row>
-                        <ion-col size="3"></ion-col>
-                        <ion-col size="6">
-                            <ion-item>
-                                <ion-label>
-                                    <h3>Latest balance:</h3>
-                                    {{member.LatestBalance}}
-                                </ion-label>
-                            </ion-item>
-                        </ion-col>
-                        <ion-col size="3"></ion-col>
-                    </ion-row>
-                    <ion-row>
-                        <ion-col size="3"></ion-col>
-                        <ion-col size="6">
-                            <ion-item>
-                                <ion-label>
                                     <h3>Medical valid to:</h3>
                                     {{member.MedicalValidTo.toLocaleDateString()}}
                                 </ion-label>
@@ -179,18 +167,6 @@
                                 <ion-label>
                                     <h3>Postcode:</h3>
                                     {{member.Postcode}}
-                                </ion-label>
-                            </ion-item>
-                        </ion-col>
-                        <ion-col size="3"></ion-col>
-                    </ion-row>
-                    <ion-row>
-                        <ion-col size="3"></ion-col>
-                        <ion-col size="6">
-                            <ion-item>
-                                <ion-label>
-                                    <h3>Ref:</h3>
-                                    {{member.Ref}}
                                 </ion-label>
                             </ion-item>
                         </ion-col>

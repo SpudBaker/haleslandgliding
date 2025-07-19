@@ -172,7 +172,20 @@ function getMemberDetails(email: string,
         let member!: MemberBackEnd | undefined;
         for (let i=1; i < csvArray.response.length; i++) {
           const row = csvArray.response[i];
-          if ((row[7]) == email) {
+          const foundEmail = new Array<string>();
+          if (row[7].includes(";")) {
+            foundEmail.push(row[7].slice(0, row[7].indexOf(";")));
+            foundEmail.push(row[7].slice(row[7].indexOf(";")));
+          } else {
+            foundEmail.push(row[7]);
+          }
+          let matchedEmail = false;
+          foundEmail.forEach((fem) => {
+            if (fem == email) {
+              matchedEmail = true;
+            }
+          });
+          if (matchedEmail) {
             member = new MemberBackEnd(row[0], row[1],
               row[2], row[3], row[4], row[5], row[6], row[7],
               row[8], row[9], row[10], row[11] == "true" ? true : false,

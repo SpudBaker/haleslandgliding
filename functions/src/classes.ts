@@ -126,7 +126,7 @@ export class MemberBackEnd {
 }
 
 /**
- ** Class to represent a Flight
+ ** Class to represent a transaction
  */
 export class TransactionBackEnd {
   readonly Reference: string;
