@@ -1,8 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { IonContent, IonCol, IonRow, IonGrid } from '@ionic/angular/standalone';
 import { RouterOutlet } from '@angular/router';
 import { HeaderComponent } from "src/app/components/header/header";
 import { NavMainComponent } from 'src/app/components/nav-main/nav-main';
+import { AuthService } from 'src/app/services/auth/auth';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-shell-page',
@@ -12,6 +14,13 @@ import { NavMainComponent } from 'src/app/components/nav-main/nav-main';
 })
 export class ShellPage {
 
-  constructor() {}
+  private auth = inject(AuthService);
+  public headerText = '';
+
+  constructor() {
+    this.auth.selectedRoute.pipe(
+      map(text => this.headerText = text)
+    ).subscribe();
+  }
 
 }

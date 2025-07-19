@@ -7,6 +7,7 @@ import { catchError, from, map, switchMap } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { FirebaseError } from '@angular/fire/app';
 import { of } from 'rxjs';
+import * as MGCGlobals from '../../../mgc-globals';
 
 @Component({
   selector: 'app-auth',
@@ -44,7 +45,7 @@ export class AuthComponent {
             return this.dataService.callFunction(res.user.email).pipe(
               switchMap(() => this.dataService.member$),
               switchMap(() => ac.dismiss()),
-              switchMap(() => this.navController.navigateRoot('shell/user'))
+              switchMap(() => this.navController.navigateRoot('shell/' + MGCGlobals.routes.MEMBERSHIP))
             );
           } else {
             return from(ac.dismiss()).pipe(
@@ -83,7 +84,15 @@ export class AuthComponent {
   }
 
   public resetPassword(){
-    this.authService.sendPasswordResetEmail(this.inputEmail).subscribe();
+    this.authService.sendPasswordResetEmail(this.inputEmail).pipe(
+      switchMap(() => {
+        const opts: AlertOptions = {
+          message: "A link has been sent to "+ this.inputEmail+". Please check your inbox."
+        };
+        return this.alertController.create(opts);
+      }),
+      switchMap(ac => ac.present())
+    ).subscribe();
   }
 
 }

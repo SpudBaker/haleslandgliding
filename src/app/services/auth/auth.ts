@@ -1,8 +1,9 @@
 import { inject, Injectable } from '@angular/core';
 import { ActionCodeSettings, Auth, signInWithEmailAndPassword, sendPasswordResetEmail,
    signOut, user, User, UserCredential } from '@angular/fire/auth';
+import { NavigationEnd, Router } from '@angular/router';
 import { from, Observable, ReplaySubject } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { filter, map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -11,11 +12,19 @@ export class AuthService {
 
   public authInitiated = false;
   private firebaseAuth: Auth = inject(Auth);
+  private router: Router = inject(Router);
+  public selectedRoute = new ReplaySubject<string>(1);
   public user$ = new ReplaySubject<User | null>(1);
 
   constructor(){
     user(this.firebaseAuth).pipe(
       map(user => this.user$.next(user))
+    ).subscribe();
+    this.router.events.pipe(
+      filter(event => event instanceof NavigationEnd),
+      map(event =>{
+        this.selectedRoute.next(event.urlAfterRedirects.slice('/shell/'.length))
+      })
     ).subscribe();
   }
 

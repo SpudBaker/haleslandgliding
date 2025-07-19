@@ -10,7 +10,7 @@ import { from, ReplaySubject } from 'rxjs';
 import { catchError, map, switchMap } from 'rxjs/operators';
 import { User } from '@angular/fire/auth';
 import { FirebaseError } from '@angular/fire/app';
-
+import * as MGCGlobals from '../../../mgc-globals';
 @Component({
   selector: 'app-nav-main',
   imports: [CommonModule, FormsModule, IonGrid, IonButton, IonRow, IonCol, IonIcon],
@@ -31,15 +31,15 @@ export class NavMainComponent {
   }
 
   public navAccountsPage(): void{
-    this.navController.navigateRoot('shell/accounts');
+    this.navController.navigateRoot('shell/' + MGCGlobals.routes.ACCOUNTS);
   }
 
   public navFlightsPage(): void{
-    this.navController.navigateRoot('shell/flights');
+    this.navController.navigateRoot('shell/' + MGCGlobals.routes.FLIGHTS);
   }
   
   public navUserPage(): void{
-    this.navController.navigateRoot('shell/user');
+    this.navController.navigateRoot('shell/' + MGCGlobals.routes.MEMBERSHIP);
   }
 
   public signOut(){

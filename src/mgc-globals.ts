@@ -7,6 +7,13 @@ import { of } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 import { DataService } from './app/services/data/data';
 
+export enum routes {
+    ACCOUNTS = 'accounts',
+    FLIGHTS = 'flights',
+    LOGIN = 'login',
+    MEMBERSHIP = 'membership',
+}
+
 export namespace AuthGuard {
     export const canActivateLoggedIn = (
         route: ActivatedRouteSnapshot, 
