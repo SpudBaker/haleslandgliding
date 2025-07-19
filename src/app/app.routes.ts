@@ -15,11 +15,17 @@ export const routes: Routes = [
       {path: 'flights', canActivate: [AuthGuard.canActivateLoggedIn], component: FlightsComponent},
       {path: 'user', canActivate: [AuthGuard.canActivateLoggedIn], component: UserComponent},
       {path: 'login', canActivate: [AuthGuard.canActivateLoggedOut], component: AuthComponent},
+      {path: '**', canActivate: [AuthGuard.canActivateLoggedOut], component: AuthComponent}
     ]
   },
   {
     path: '',
     redirectTo: 'shell/user',
-    pathMatch: 'full',
+    pathMatch: 'full'
+  },
+  {
+    path: '**',
+    redirectTo: 'shell/login',
+    pathMatch: 'full'
   }
 ];
