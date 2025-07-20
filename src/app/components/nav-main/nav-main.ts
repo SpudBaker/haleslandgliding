@@ -22,10 +22,13 @@ export class NavMainComponent {
   private authService = inject(AuthService);
   private dataService = inject(DataService);
   private loadingController = inject(LoadingController);
+  public MGCGlobals = MGCGlobals;
   private navController = inject(NavController);
+  public selectedRoute$: ReplaySubject<string>;
   public user$: ReplaySubject<User | null>;
 
   constructor(){
+    this.selectedRoute$ = this.authService.selectedRoute;
     this.user$ = this.authService.user$;
     addIcons({airplaneOutline, cashOutline, personCircleOutline});
   }

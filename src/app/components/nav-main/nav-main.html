@@ -1,25 +1,32 @@
-@if(user$ | async; as user){
-    @if(user.email){
+@if({user: user$ | async, selectedRoute: selectedRoute$ | async}; as context){
+    @if(context.user?.email){
         <ion-grid>
             <ion-row>
                 <ion-col size="4"></ion-col>
                 <ion-col size="8">
-                    <ion-icon name="cash-outline" (click)="navAccountsPage()"></ion-icon>
+                    <ion-button fill="clear" [disabled]="context.selectedRoute == MGCGlobals.routes.ACCOUNTS" (click)="navAccountsPage()">
+                        <ion-icon name="cash-outline"></ion-icon>
+                    </ion-button>
                 </ion-col>
             </ion-row>
             <ion-row>
                 <ion-col size="4"></ion-col>
                 <ion-col size="8">
-                    <ion-icon name="airplane-outline" (click)="navFlightsPage()"></ion-icon>
+                    <ion-button fill="clear" [disabled]="context.selectedRoute == MGCGlobals.routes.FLIGHTS" (click)="navFlightsPage()">
+                        <ion-icon name="airplane-outline"></ion-icon>
+                    </ion-button>
                 </ion-col>
             </ion-row>
                 <ion-row>
                 <ion-col size="4"></ion-col>
                 <ion-col size="8">
-                    <ion-icon name="person-circle-outline" (click)="navUserPage()"></ion-icon>
+                    <ion-button fill="clear" [disabled]="context.selectedRoute == MGCGlobals.routes.MEMBERSHIP" (click)="navUserPage()">
+                        <ion-icon name="person-circle-outline" (click)="navUserPage()"></ion-icon>
+                    </ion-button>
                 </ion-col>
             </ion-row>
             <ion-row>
+                <ion-col size="2"></ion-col>
                 <ion-col align="left">
                     <br/>
                     <ion-button (click)="signOut()" expand="block" color="primary">Sign Out</ion-button>

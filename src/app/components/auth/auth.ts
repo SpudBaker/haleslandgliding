@@ -3,10 +3,10 @@ import { IonButton, IonCol, IonGrid, IonRow, IonInput, AlertController, AlertOpt
 import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../services/auth/auth';
 import { DataService } from 'src/app/services/data/data';
-import { catchError, from, map, switchMap } from 'rxjs';
+import { from, of, switchMap } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { FirebaseError } from '@angular/fire/app';
-import { of } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
 import * as MGCGlobals from '../../../mgc-globals';
 
 @Component({
@@ -42,15 +42,25 @@ export class AuthComponent {
         switchMap(() => this.authService.signIn(this.inputEmail, this.inputPassword)),
         switchMap(res => {
           if (res.user.email) {
-            return this.dataService.callFunction(res.user.email).pipe(
-              switchMap(() => this.dataService.member$),
-              switchMap(() => ac.dismiss()),
-              switchMap(() => this.navController.navigateRoot('shell/' + MGCGlobals.routes.MEMBERSHIP))
-            );
+            if(res.user.emailVerified){
+              return this.dataService.callFunction(res.user.email).pipe(
+                switchMap(() => this.dataService.member$),
+                switchMap(() => ac.dismiss()),
+                switchMap(() => this.navController.navigateRoot('shell/' + MGCGlobals.routes.MEMBERSHIP))
+              );
+            } else {
+              return from(ac.dismiss()).pipe(
+                switchMap(()=> {
+                  const optsError: AlertOptions = {message: 'email has not been verified, select reset password to resend e-mail'};
+                  return this.alertController.create(optsError)
+                }),
+                switchMap(ac => ac.present())
+              );
+            }
           } else {
             return from(ac.dismiss()).pipe(
               switchMap(()=> {
-                const optsError: AlertOptions = {message: 'email does not appear to belong to a member of Mendip Gliding Club'};
+                const optsError: AlertOptions = {message: 'invalidate credentials, select reset password if forgotten or register email'};
                 return this.alertController.create(optsError)
               }),
               switchMap(ac => ac.present())
@@ -72,10 +82,10 @@ export class AuthComponent {
                 case 'auth/invalid-credential':
                   optsError = {message: 'invalid credentials'};
                   break;
-              }
-              return from(this.alertController.create(optsError)).pipe(
-                switchMap(ac => ac.present())
-              )
+                }
+                return from(this.alertController.create(optsError)).pipe(
+                  switchMap(ac => ac.present())
+                )
             })
           );
         })
@@ -83,11 +93,37 @@ export class AuthComponent {
     ).subscribe();
   }
 
+  public register(){
+    this.authService.signup(this.inputEmail, this.inputPassword).pipe(
+      map(res => console.log('res', res)),
+      switchMap(() => {
+        let opts: AlertOptions = {message: 'Email verification is required, please check your inbox'};
+        return this.alertController.create(opts);
+      }),
+      switchMap(ac => ac.present()),
+      catchError(fbe => {
+        console.log('error', fbe.code);
+        let optsError: AlertOptions = {message: 'unknown error'};
+          switch(fbe.code){
+            case 'auth/weak-password':
+              optsError = {message: fbe.message.slice(10)};
+              break;
+            case 'auth/email-already-in-use':
+              optsError = {message: 'email address already exists'};
+              break;
+          }
+        return from(this.alertController.create(optsError)).pipe(
+          switchMap(ac => ac.present())
+        );
+      })
+    ).subscribe();
+  }
+
   public resetPassword(){
     this.authService.sendPasswordResetEmail(this.inputEmail).pipe(
-      switchMap(() => {
+      switchMap(res => {
         const opts: AlertOptions = {
-          message: "A link has been sent to "+ this.inputEmail+". Please check your inbox."
+          message: "A link has been sent to " + this.inputEmail + ". Please check your inbox."
         };
         return this.alertController.create(opts);
       }),

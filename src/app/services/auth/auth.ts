@@ -1,15 +1,18 @@
 import { inject, Injectable } from '@angular/core';
-import { ActionCodeSettings, Auth, signInWithEmailAndPassword, sendPasswordResetEmail,
+import { AlertController, AlertOptions } from '@ionic/angular';
+import { ActionCodeSettings, Auth, createUserWithEmailAndPassword, signInWithEmailAndPassword,
+   sendEmailVerification, sendPasswordResetEmail,
    signOut, user, User, UserCredential } from '@angular/fire/auth';
 import { NavigationEnd, Router } from '@angular/router';
-import { from, Observable, ReplaySubject } from 'rxjs';
-import { filter, map } from 'rxjs/operators';
+import { from, Observable, of, ReplaySubject } from 'rxjs';
+import { filter, map, switchMap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
+  private alertController = inject(AlertController);
   public authInitiated = false;
   private firebaseAuth: Auth = inject(Auth);
   private router: Router = inject(Router);
@@ -18,7 +21,13 @@ export class AuthService {
 
   constructor(){
     user(this.firebaseAuth).pipe(
-      map(user => this.user$.next(user))
+      switchMap(user => {
+        if(user && (!user.emailVerified)){
+          return this.signOut();
+        } else {
+          return of(this.user$.next(user));
+        }
+      })
     ).subscribe();
     this.router.events.pipe(
       filter(event => event instanceof NavigationEnd),
@@ -52,13 +61,14 @@ export class AuthService {
     return from(signOut(this.firebaseAuth));
   }
 
-  /*public async signup(email: string, password: string): Promise<void> {
-    const userCredential: UserCredential = await createUserWithEmailAndPassword(
+  public signup(email: string, password: string): Observable<void> {
+    return from(createUserWithEmailAndPassword(
       this.firebaseAuth,
       email,
       password
+    )).pipe(
+      switchMap(userCredential => sendEmailVerification(userCredential.user, null))
     )
-    await sendEmailVerification(userCredential.user, null)
-  }*/
-  
+  }
+
 }
