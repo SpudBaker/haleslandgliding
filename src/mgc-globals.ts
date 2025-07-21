@@ -8,7 +8,7 @@ import { map, switchMap } from 'rxjs/operators';
 import { DataService } from './app/services/data/data';
 
 export enum routes {
-    ACCOUNTS = 'accounts',
+    ACCOUNT = 'account',
     FLIGHTS = 'flights',
     LOGIN = 'login',
     MEMBERSHIP = 'membership',

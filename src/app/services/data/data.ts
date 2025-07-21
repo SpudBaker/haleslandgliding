@@ -45,8 +45,8 @@ export class DataService {
 
  private extractAccounts(data: Object): Globals.TransactionFrontEnd[] {
     const arr = new Array<Globals.TransactionFrontEnd>();
-    const flights = data as GlobalsBackEnd.TransactionBackEnd[];
-    flights.forEach(t => {
+    const accounts = data as GlobalsBackEnd.TransactionBackEnd[];
+    accounts.forEach(t => {
       arr.push(new Globals.TransactionFrontEnd(t.Reference, t.TransactionType,
         new Date(t.TransactionDate), t.MemberRef, t.Member, t.Charges, t.Payment,
         t.Notes));

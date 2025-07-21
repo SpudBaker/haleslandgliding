@@ -12,7 +12,6 @@ import { filter, map, switchMap } from 'rxjs/operators';
 })
 export class AuthService {
 
-  private alertController = inject(AlertController);
   public authInitiated = false;
   private firebaseAuth: Auth = inject(Auth);
   private router: Router = inject(Router);

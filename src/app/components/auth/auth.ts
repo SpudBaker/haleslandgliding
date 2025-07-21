@@ -95,14 +95,12 @@ export class AuthComponent {
 
   public register(){
     this.authService.signup(this.inputEmail, this.inputPassword).pipe(
-      map(res => console.log('res', res)),
       switchMap(() => {
         let opts: AlertOptions = {message: 'Email verification is required, please check your inbox'};
         return this.alertController.create(opts);
       }),
       switchMap(ac => ac.present()),
       catchError(fbe => {
-        console.log('error', fbe.code);
         let optsError: AlertOptions = {message: 'unknown error'};
           switch(fbe.code){
             case 'auth/weak-password':

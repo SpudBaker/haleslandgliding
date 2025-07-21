@@ -285,9 +285,7 @@ exports.getGlidexFiles = functions.https.onRequest(
               })
             );
           } else {
-            return of(response.send(JSON.stringify(
-              {data: "No member identied"}
-            )));
+            return of(response.sendStatus(401).send("no member identified"));
           }
         })
       )),

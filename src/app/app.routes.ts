@@ -12,7 +12,7 @@ export const routes: Routes = [
     path: 'shell',
     component: ShellPage,
     children: [
-      {path: MGCGlobals.routes.ACCOUNTS, canActivate: [AuthGuard.canActivateLoggedIn], component: AccountsComponent},
+      {path: MGCGlobals.routes.ACCOUNT, canActivate: [AuthGuard.canActivateLoggedIn], component: AccountsComponent},
       {path: MGCGlobals.routes.FLIGHTS, canActivate: [AuthGuard.canActivateLoggedIn], component: FlightsComponent},
       {path: MGCGlobals.routes.LOGIN, canActivate: [AuthGuard.canActivateLoggedOut], component: AuthComponent},
       {path: MGCGlobals.routes.MEMBERSHIP, canActivate: [AuthGuard.canActivateLoggedIn], component: UserComponent},
