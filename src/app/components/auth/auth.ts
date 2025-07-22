@@ -112,27 +112,36 @@ export class AuthComponent {
   }
 
   public register(){
-    this.authService.signup(this.inputEmail, this.inputPassword).pipe(
-      switchMap(() => {
-        let opts: AlertOptions = {message: 'Email verification is required, please check your inbox'};
-        return this.alertController.create(opts);
-      }),
-      switchMap(ac => ac.present()),
-      catchError(fbe => {
-        let optsError: AlertOptions = {message: 'unknown error'};
-          switch(fbe.code){
-            case 'auth/weak-password':
-              optsError = {message: fbe.message.slice(10)};
-              break;
-            case 'auth/email-already-in-use':
-              optsError = {message: 'email address already exists'};
-              break;
-          }
-        return from(this.alertController.create(optsError)).pipe(
-          switchMap(ac => ac.present())
-        );
-      })
-    ).subscribe();
+    if(this.inputEmail && this.inputPassword){
+      this.authService.signup(this.inputEmail, this.inputPassword).pipe(
+        switchMap(() => {
+          let opts: AlertOptions = {message: 'Email verification is required, please check your inbox'};
+          return this.alertController.create(opts);
+        }),
+        switchMap(ac => ac.present()),
+        catchError(fbe => {
+          let optsError: AlertOptions = {message: 'unknown error'};
+            switch(fbe.code){
+              case 'auth/weak-password':
+                optsError = {message: fbe.message.slice(10)};
+                break;
+              case 'auth/email-already-in-use':
+                optsError = {message: 'email address already exists'};
+                break;
+              case 'auth/invalid-email':
+                optsError = {message: 'invalid email'}
+            }
+          return from(this.alertController.create(optsError)).pipe(
+            switchMap(ac => ac.present())
+          );
+        })
+      ).subscribe();
+    } else {
+      let optsError: AlertOptions = {message: 'email and password are required to register'};
+      from(this.alertController.create(optsError)).pipe(
+        switchMap(ac => ac.present())
+      ).subscribe();
+    }
   }
 
   public resetPassword(){
