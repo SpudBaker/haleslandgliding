@@ -34,10 +34,7 @@ export class NavMainComponent {
   constructor(){
     this.selectedRoute$ = this.authService.selectedRoute;
     this.selectedRoute$.pipe(
-      tap(route => {
-        console.log(route);
-        this.selectedRoute = route;
-      })
+      tap(route => this.selectedRoute = route)
     ).subscribe();
     this.user$ = this.authService.user$;
     addIcons({airplaneOutline, cashOutline, logOutOutline, personCircleOutline});
@@ -82,6 +79,9 @@ export class NavMainComponent {
         break;
       case MGCGlobals.routes.MEMBERSHIP:
         this.navUserPage();
+        break;
+      case MGCGlobals.routes.LOGIN:
+        this.signOut();
         break;
     }
   }

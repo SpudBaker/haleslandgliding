@@ -3,19 +3,20 @@
         @if(mobile$ | async){
             <ion-grid>
                 <ion-row>
-                    <ion-col width="3"></ion-col>
-                    <ion-col align="center">
+                    <ion-col size="3"></ion-col>
+                    <ion-col align="right" size="6">
                         <ion-list>
                             <ion-item>
                                 <ion-select interface="popover" [value]="selectedRoute" (ionChange)="selectChange($event)">
                                     <ion-select-option value={{MGCGlobals.routes.ACCOUNT}}>Account</ion-select-option>
                                     <ion-select-option value={{MGCGlobals.routes.FLIGHTS}}>Flights</ion-select-option>
                                     <ion-select-option value={{MGCGlobals.routes.MEMBERSHIP}}>Membership</ion-select-option>
+                                    <ion-select-option value={{MGCGlobals.routes.LOGIN}}>Sign Out</ion-select-option>
                                 </ion-select>
                             </ion-item>
                         </ion-list>
                     </ion-col>
-                    <ion-col width="3"></ion-col>
+                    <ion-col size="3"></ion-col>
                 </ion-row>
             </ion-grid>
         }

@@ -56,6 +56,15 @@ export namespace AuthGuard {
     }
 }
 
+export function convertStringToDate(d: string): Date | null {
+    const timestamp = Date.parse('foo');
+    if (isNaN(timestamp) == false) {
+        return new Date(timestamp);
+    } else {
+        return null;
+    }
+}
+
 /**
  ** Class to represent a Flight
  */
@@ -125,7 +134,7 @@ export class MemberFrontEnd {
     readonly DateJoined: Date;
     readonly MembershipExpires: Date;
     readonly LapsedMember: boolean;
-    readonly MedicalValidTo: Date;
+    readonly MedicalValidTo: Date | null;
     readonly AFRDue: Date;
     readonly GiftAidMiles: number;
     readonly ChargeToName: string;
@@ -133,7 +142,7 @@ export class MemberFrontEnd {
     readonly DateLastFlight: Date;
     constructor(Ref: string, MemberType: string, MembershipNo: string, Name: string, Postcode: string, TelMobile: string,
         TelHome: string, EMail: string, EmergencyContact: string, DateJoined: Date, MembershipExpires: Date,
-        LapsedMember: boolean, MedicalValidTo: Date, AFRDue: Date, GiftAidMiles: number, ChargeToName: string,
+        LapsedMember: boolean, MedicalValidTo: Date | null, AFRDue: Date, GiftAidMiles: number, ChargeToName: string,
         LatestBalance: number, DateLastFlight: Date){
             this.Ref = Ref,
             this.MemberType = MemberType;

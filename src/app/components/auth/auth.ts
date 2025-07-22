@@ -3,11 +3,13 @@ import { IonButton, IonCol, IonGrid, IonRow, IonInput, AlertController, AlertOpt
 import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../services/auth/auth';
 import { DataService } from 'src/app/services/data/data';
-import { from, of, switchMap } from 'rxjs';
+import { GeneralService } from 'src/app/services/general/general';
+import { from, of } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { FirebaseError } from '@angular/fire/app';
-import { catchError, map } from 'rxjs/operators';
+import { catchError, switchMap, tap } from 'rxjs/operators';
 import * as MGCGlobals from '../../../mgc-globals';
+import { Subscription } from 'rxjs/internal/Subscription';
 
 @Component({
   selector: 'app-auth',
@@ -21,9 +23,25 @@ export class AuthComponent {
   public inputEmail = '';
   public inputPassword = '';
   private alertController = inject(AlertController);
+  private mobileSub!: Subscription;
+  public colEdge = 4.5;
+  public colCentre = 3;
   private navController = inject(NavController);
 
-  constructor(private authService: AuthService, private dataService: DataService){}
+  constructor(private authService: AuthService, private dataService: DataService, private generalService: GeneralService){
+    if(!this.mobileSub){
+      this.mobileSub = this.generalService.mobile$.pipe(
+        tap(mobile => {
+          if(mobile){
+            this.colEdge = 3;
+            this.colCentre = 6;
+          } else{
+            this.colEdge = 4;
+            this.colCentre = 4;
+          }
+        })
+      ).subscribe()};
+  }
 
   public disableButton(): boolean {
     if(this.inputEmail?.length > 0 && this.inputPassword?.length > 0){

@@ -2,10 +2,19 @@
   <ion-header>
     <ion-grid>
       <ion-row>
+        <ion-col size="2"></ion-col>
         <ion-col>
           <ion-img src="assets/logo.png"></ion-img>
         </ion-col>
+        <ion-col size="2"></ion-col>
       </ion-row>
+      @if(member$ | async; as member){
+        <ion-row>
+          <ion-col align="center">
+            <h2>{{member.Name}}</h2>
+          </ion-col>
+        </ion-row>
+      }
     </ion-grid>
   </ion-header>
 }
@@ -17,5 +26,12 @@
       </ion-col>
       <ion-col size="10" align="center"><h1>{{text}}</h1></ion-col>
     </ion-row>
+      @if(member$ | async; as member){
+        <ion-row>
+          <ion-col align="center">
+            <h2>{{member.Name}}</h2>
+          </ion-col>
+        </ion-row>
+      }
   </ion-grid>
 }

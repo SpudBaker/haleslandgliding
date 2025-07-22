@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AlertController, AlertOptions } from '@ionic/angular/standalone';
 import { Observable, of, ReplaySubject} from 'rxjs';
-import { map, switchMap } from 'rxjs/operators';
+import { catchError, map, switchMap } from 'rxjs/operators';
 import * as Globals from '../../../mgc-globals';
 import * as GlobalsBackEnd from '../../../../functions/src/classes';
 import { Functions, httpsCallableFromURL } from '@angular/fire/functions';
@@ -21,8 +21,8 @@ export class DataService {
   public member$ = new ReplaySubject<Globals.MemberFrontEnd | null>(1);
   private firebaseFunctions: Functions = inject(Functions);
 
-  public callFunction(email: string):Observable<void>{
-    if(this.initiated){return of(undefined)};
+  public callFunction(email: string):Observable<boolean>{
+    if(this.initiated){return of(true)};
     const url = 'https://getglidexfiles-iw4pdarncq-uc.a.run.app?email='+email;
     const callable = httpsCallableFromURL(this.firebaseFunctions,  url);
     const opts: AlertOptions = {
@@ -31,14 +31,33 @@ export class DataService {
     return from(this.alertController.create(opts)).pipe(
       switchMap(lc => lc.present()),
       switchMap(() => callable()),
-      map(d => {
+      switchMap(d => {
         this.initiated = true;
         const data = d.data as Array<any>;
-        console.log(data);
         this.accounts$.next(this.extractAccounts(data[1]));
         this.flights$.next(this.extractFlights(data[0]));
         this.member$.next(this.extractMember(data[2]));
-        this.alertController.dismiss();
+        return this.alertController.dismiss();
+      }),
+      catchError(err =>{
+        return of(this.alertController.dismiss()).pipe(
+          switchMap(() => {
+            let  message = '';
+            switch(err.code){
+              case('functions/unauthenticated'):
+                message = 'the email for this user is not authorised';
+                break;
+              default:
+                message = 'unknown error';
+            }
+            const errorOpts: AlertOptions = {
+              message
+            }
+            return this.alertController.create(errorOpts)
+          }),
+          switchMap(ac => ac.present()),
+          map(() => true)
+        )
       })
     );
   }
@@ -69,7 +88,7 @@ export class DataService {
     const m = data as GlobalsBackEnd.MemberBackEnd;
     return new Globals.MemberFrontEnd(m.Ref, m.MemberType, m.MembershipNo, m.Name,
       m.Postcode, m.TelMobile, m.TelHome, m.EMail, m.EmergencyContact, new Date(m.DateJoined),
-      new Date(m.MembershipExpires), m.LapsedMember, new Date(m.MedicalValidTo),
+      new Date(m.MembershipExpires), m.LapsedMember, Globals.convertStringToDate(m.MedicalValidTo),
       new Date(m.AFRDue), m.GiftAidMiles, m.ChargeToName, +m.LatestBalance, new Date(m.DateLastFlight)
     );
   }

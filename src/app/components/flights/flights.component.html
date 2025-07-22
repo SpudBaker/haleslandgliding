@@ -1,105 +1,99 @@
-<ion-grid>
-    <ion-row>
-        <ion-col size="10">
-        @if(flights$ | async; as flights){
-            <ion-grid>
-            @for(flight of flights; track flight.Ref){
-                <ion-row>
-                    <ion-col size="1"></ion-col>
-                    <ion-col size="10">
-                        <ion-item>
-                            <ion-label>
-                                <h2><b>{{flight.FlightDate.toLocaleDateString()}}</b></h2>
-                                <ion-grid>
-                                    <ion-row>
-                                        <ion-col size="4">
-                                            <ion-item lines="none">
-                                                <ion-label>
-                                                    <h3>F/Ref:</h3>
-                                                    {{flight.Ref}}
-                                                </ion-label>
-                                            </ion-item>
-                                        </ion-col>
-                                        <ion-col size="8">
-                                            <ion-item lines="none">
-                                            <ion-label>
-                                                    <h3>Flight Type:</h3>
-                                                    {{flight.FlightType}}
-                                                </ion-label>
-                                            </ion-item>
-                                        </ion-col>
-                                    </ion-row>
-                                    <ion-row>
-                                        <ion-col>
-                                            <ion-item lines="none">
-                                                <ion-label>
-                                                    <h3>Glider:</h3>
-                                                    {{flight.Glider}}
-                                                </ion-label>
-                                            </ion-item>
-                                        </ion-col>
-                                        <ion-col>
-                                            <ion-item lines="none">
-                                            <ion-label>
-                                                    <h3>P1:</h3>
-                                                    {{flight.P1}}
-                                                </ion-label>
-                                            </ion-item>
-                                        </ion-col>
-                                        <ion-col>
-                                            <ion-item lines="none">
-                                            <ion-label>
-                                                    <h3>P2:</h3>
-                                                    {{flight.P2}}
-                                                </ion-label>
-                                            </ion-item>
-                                        </ion-col>
-                                    </ion-row>
-                                    <ion-row>
-                                        <ion-col>
-                                            <ion-item lines="none">
-                                                <ion-label>
-                                                    <h3>TakeOff:</h3>
-                                                    {{flight.TakeOff}}
-                                                </ion-label>
-                                            </ion-item>
-                                        </ion-col>
-                                        <ion-col>
-                                            <ion-item lines="none">
-                                            <ion-label>
-                                                    <h3>Duration:</h3>
-                                                    {{flight.Duration}}
-                                                </ion-label>
-                                            </ion-item>
-                                        </ion-col>
-                                        <ion-col>
-                                            <ion-item lines="none">
-                                            <ion-label>
-                                                    <h3>Charge To:</h3>
-                                                    {{flight.ChargeToText}}
-                                                </ion-label>
-                                            </ion-item>
-                                        </ion-col>
-                                    </ion-row>
-                                    <ion-row>
-                                        <ion-col size="12">
-                                            <ion-item lines="none">
-                                            <ion-label>
-                                                    <h3>Notes:</h3>
-                                                    {{flight.Notes}}
-                                                </ion-label>
-                                            </ion-item>
-                                        </ion-col>
-                                    </ion-row>
-                                </ion-grid>
-                            </ion-label>
-                        </ion-item>
-                    </ion-col>
-                    <ion-col size="1"></ion-col>
-                </ion-row>
-            }
-            </ion-grid>
-        }
-        </ion-col>
-    </ion-row>
-</ion-grid>
+@if(flights$ | async; as flights){
+    <ion-grid>
+    @for(flight of flights; track flight.Ref){
+        <ion-row>
+            <ion-col size="1"></ion-col>
+            <ion-col size="10">
+                <ion-item>
+                    <ion-label>
+                        <h2><b>{{flight.FlightDate.toLocaleDateString()}}</b></h2>
+                        <ion-grid>
+                            <ion-row>
+                                <ion-col size="4">
+                                    <ion-item lines="none">
+                                        <ion-label>
+                                            <h3>F/Ref:</h3>
+                                            {{flight.Ref}}
+                                        </ion-label>
+                                    </ion-item>
+                                </ion-col>
+                                <ion-col size="8">
+                                    <ion-item lines="none">
+                                    <ion-label>
+                                            <h3>Flight Type:</h3>
+                                            {{flight.FlightType}}
+                                        </ion-label>
+                                    </ion-item>
+                                </ion-col>
+                            </ion-row>
+                            <ion-row>
+                                <ion-col>
+                                    <ion-item lines="none">
+                                        <ion-label>
+                                            <h3>Glider:</h3>
+                                            {{flight.Glider}}
+                                        </ion-label>
+                                    </ion-item>
+                                </ion-col>
+                                <ion-col>
+                                    <ion-item lines="none">
+                                    <ion-label>
+                                            <h3>P1:</h3>
+                                            {{flight.P1}}
+                                        </ion-label>
+                                    </ion-item>
+                                </ion-col>
+                                <ion-col>
+                                    <ion-item lines="none">
+                                    <ion-label>
+                                            <h3>P2:</h3>
+                                            {{flight.P2}}
+                                        </ion-label>
+                                    </ion-item>
+                                </ion-col>
+                            </ion-row>
+                            <ion-row>
+                                <ion-col>
+                                    <ion-item lines="none">
+                                        <ion-label>
+                                            <h3>TakeOff:</h3>
+                                            {{flight.TakeOff}}
+                                        </ion-label>
+                                    </ion-item>
+                                </ion-col>
+                                <ion-col>
+                                    <ion-item lines="none">
+                                    <ion-label>
+                                            <h3>Duration:</h3>
+                                            {{flight.Duration}}
+                                        </ion-label>
+                                    </ion-item>
+                                </ion-col>
+                                <ion-col>
+                                    <ion-item lines="none">
+                                    <ion-label>
+                                            <h3>Charge To:</h3>
+                                            {{flight.ChargeToText}}
+                                        </ion-label>
+                                    </ion-item>
+                                </ion-col>
+                            </ion-row>
+                            <ion-row>
+                                <ion-col size="12">
+                                    <ion-item lines="none">
+                                    <ion-label>
+                                            <h3>Notes:</h3>
+                                            {{flight.Notes}}
+                                        </ion-label>
+                                    </ion-item>
+                                </ion-col>
+                            </ion-row>
+                        </ion-grid>
+                    </ion-label>
+                </ion-item>
+            </ion-col>
+            <ion-col size="1"></ion-col>
+        </ion-row>
+    }
+    </ion-grid>
+}
