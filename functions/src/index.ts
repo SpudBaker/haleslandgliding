@@ -5,6 +5,8 @@ import {catchError, map, switchMap} from "rxjs/operators";
 import {MethodOptions} from "googleapis/build/src/apis/abusiveexperiencereport";
 import {parse, Options} from "csv-parse";
 import {FlightBackEnd, MemberBackEnd, TransactionBackEnd} from "./classes";
+import cors = require("cors");
+
 interface parseCsvStringResponse {
   response: string[][]
 }
@@ -267,31 +269,34 @@ function getTransactions(memberID: string,
 }
 
 exports.getGlidexFiles = functions.https.onRequest(
-  {cors: true}, (request, response) => {
-    const email: string = request.query.email as string;
-    setDriveAPI().pipe(
-      switchMap(() => getArrayOfFileRefs()),
-      switchMap((fileRefs) => getMemberDetails(email, fileRefs).pipe(
-        switchMap((member) => {
-          if (member) {
-            return forkJoin([
-              getFlightDetails(member.Ref, fileRefs),
-              getTransactions(member.Ref, fileRefs),
-            ]).pipe(
-              map((results) => {
-                return response.send(JSON.stringify(
-                  {data: [results[0], results[1], member]}
-                ));
-              })
-            );
-          } else {
-            return of(response.sendStatus(401));
-          }
+  (req, res) => {
+    const options = {origin: "https://glidexmemberview.web.app"};
+    cors(options)(req, res, () => {
+      const email: string = req.query.email as string;
+      setDriveAPI().pipe(
+        switchMap(() => getArrayOfFileRefs()),
+        switchMap((fileRefs) => getMemberDetails(email, fileRefs).pipe(
+          switchMap((member) => {
+            if (member) {
+              return forkJoin([
+                getFlightDetails(member.Ref, fileRefs),
+                getTransactions(member.Ref, fileRefs),
+              ]).pipe(
+                map((results) => {
+                  return res.send(JSON.stringify(
+                    {data: [results[0], results[1], member]}
+                  ));
+                })
+              );
+            } else {
+              return of(res.sendStatus(401));
+            }
+          })
+        )),
+        catchError((error) => {
+          return of(res.send(JSON.stringify({data: error.message})));
         })
-      )),
-      catchError((error) => {
-        return of(response.send(JSON.stringify({data: error.message})));
-      })
-    ).subscribe();
+      ).subscribe();
+    });
   }
 );
