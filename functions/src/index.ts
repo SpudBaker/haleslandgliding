@@ -25,27 +25,29 @@ function filterFileRefs(fullList: Array<driveV3.Schema$File> | undefined)
   let flights: driveV3.Schema$File | undefined;
   let members: driveV3.Schema$File | undefined;
   fullList?.forEach((file) => {
-    if (file.name == "Accounts.csv") {
-      if (accounts?.createdTime && file?.createdTime) {
-        if (new Date(accounts.createdTime) < new Date(file.createdTime)) {
+    functions.logger.info("file");
+    functions.logger.info(file);
+    if (file.name?.toLowerCase() == "accounts.csv") {
+      if (accounts?.modifiedTime && file?.modifiedTime) {
+        if (new Date(accounts.modifiedTime) < new Date(file.modifiedTime)) {
           accounts = file;
         }
       } else {
         accounts = file;
       }
     }
-    if (file.name == "Flights.csv") {
-      if (flights?.createdTime && file?.createdTime) {
-        if (new Date(flights.createdTime) < new Date(file.createdTime)) {
+    if (file.name?.toLowerCase() == "flights.csv") {
+      if (flights?.modifiedTime && file?.modifiedTime) {
+        if (new Date(flights.modifiedTime) < new Date(file.modifiedTime)) {
           flights = file;
         }
       } else {
         flights = file;
       }
     }
-    if (file.name == "Members.csv") {
-      if (members?.createdTime && file?.createdTime) {
-        if (new Date(members.createdTime) < new Date(file.createdTime)) {
+    if (file.name?.toLowerCase() == "members.csv") {
+      if (members?.modifiedTime && file?.modifiedTime) {
+        if (new Date(members.modifiedTime) < new Date(file.modifiedTime)) {
           members = file;
         }
       } else {
@@ -254,12 +256,13 @@ function getTransactions(memberID: string,
         functions.logger.info("GET TRANSACTION() - member id", memberID);
         for (let i=1; i < csvArray.response.length; i++) {
           const row = csvArray.response[i];
-          functions.logger.info("GET TRANSACTION() - row[3]", row[4]);
+          functions.logger.info("GET TRANSACTION() - row[4]", row[4]);
           if ((row[3]) == memberID) {
             arrTransactions.push(new TransactionBackEnd(row[0], row[1],
               row[2], row[3], row[4], row[5], row[6], row[7]));
           }
         }
+        functions.logger.info("total transactions : " + arrTransactions.length);
         return arrTransactions;
       })
     );
