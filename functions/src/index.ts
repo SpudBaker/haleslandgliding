@@ -178,8 +178,8 @@ function getMemberDetails(email: string,
           const row = csvArray.response[i];
           const foundEmail = new Array<string>();
           if (row[7].includes(";")) {
-            foundEmail.push(row[7].slice(0, row[7].indexOf(";")));
-            foundEmail.push(row[7].slice(row[7].indexOf(";")));
+            foundEmail.push(row[7].slice(0, row[7].indexOf(";")).toLowerCase());
+            foundEmail.push(row[7].slice(row[7].indexOf(";")).toLowerCase());
           } else {
             foundEmail.push(row[7]);
           }

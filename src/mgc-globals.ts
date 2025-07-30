@@ -26,7 +26,7 @@ export namespace AuthGuard {
         return authService.user$.pipe(
             switchMap(user => {
                 if(user?.email){
-                    return dataService.callFunction(user.email).pipe(
+                    return dataService.callFunction(user.email.toLowerCase()).pipe(
                         map(() => true)
                     )
                 } else {
