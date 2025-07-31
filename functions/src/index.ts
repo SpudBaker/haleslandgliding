@@ -25,8 +25,6 @@ function filterFileRefs(fullList: Array<driveV3.Schema$File> | undefined)
   let flights: driveV3.Schema$File | undefined;
   let members: driveV3.Schema$File | undefined;
   fullList?.forEach((file) => {
-    functions.logger.info("file");
-    functions.logger.info(file);
     if (file.name?.toLowerCase() == "accounts.csv") {
       if (accounts?.modifiedTime && file?.modifiedTime) {
         if (new Date(accounts.modifiedTime) < new Date(file.modifiedTime)) {
@@ -218,7 +216,6 @@ function getFlightDetails(memberID: string,
   fileRefs: Array<driveV3.Schema$File | undefined>)
   : Observable< FlightBackEnd[]> {
   const arrFlights = new Array<FlightBackEnd>();
-  functions.logger.info("GET FLIGHT DETAILS () - memberID", memberID);
   if (fileRefs) {
     return getFile(fileRefs, 1).pipe(
       switchMap((utf8) => parseCsvString(utf8)),
@@ -253,16 +250,13 @@ function getTransactions(memberID: string,
     return getFile(fileRefs, 0).pipe(
       switchMap((utf8) => parseCsvString(utf8)),
       map((csvArray) => {
-        functions.logger.info("GET TRANSACTION() - member id", memberID);
         for (let i=1; i < csvArray.response.length; i++) {
           const row = csvArray.response[i];
-          functions.logger.info("GET TRANSACTION() - row[4]", row[4]);
           if ((row[3]) == memberID) {
             arrTransactions.push(new TransactionBackEnd(row[0], row[1],
               row[2], row[3], row[4], row[5], row[6], row[7]));
           }
         }
-        functions.logger.info("total transactions : " + arrTransactions.length);
         return arrTransactions;
       })
     );
@@ -273,7 +267,7 @@ function getTransactions(memberID: string,
 
 exports.getGlidexFiles = functions.https.onRequest(
   (req, res) => {
-    const options = {origin: "https://glidexmemberview.web.app"};
+    const options = {origin: ["https://glidexmemberview.web.app", "https://glidexmemberview.firebaseapp.com"]};
     cors(options)(req, res, () => {
       const email: string = req.query.email as string;
       setDriveAPI().pipe(
