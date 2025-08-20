@@ -54,6 +54,49 @@ export class FlightBackEnd {
   }
 }
 
+/**
+ * Class to represent a Gift Aid Summary.
+ */
+export class GiftAidSummary {
+  readonly MemberRef: string;
+  readonly MemberNumber: string;
+  readonly MemberName: string;
+  readonly FromDate: string;
+  readonly ToDate: string;
+  readonly ClaimDays: string;
+  readonly PostCode: string;
+  readonly RoundTripMileage: string;
+  readonly VehicleType: string;
+  readonly PotentialClaimValue: string;
+/**
+  * Class constructor
+  * @param {string} MemberRef
+  * @param {string} MemberNumber
+  * @param {string} MemberName
+  * @param {string} FromDate
+  * @param {string} ToDate
+  * @param {string} ClaimDays
+  * @param {string} PostCode
+  * @param {string} RoundTripMileage
+  * @param {string} VehicleType
+  * @param {string} PotentialClaimValue
+  */
+  constructor(MemberRef: string, MemberNumber: string, MemberName: string,
+    FromDate: string, ToDate: string, ClaimDays: string, PostCode: string,
+    RoundTripMileage: string, VehicleType: string,
+    PotentialClaimValue: string) {
+    this.MemberRef = MemberRef;
+    this.MemberNumber = MemberNumber;
+    this.MemberName = MemberName;
+    this.FromDate = FromDate;
+    this.ToDate = ToDate;
+    this.ClaimDays= ClaimDays;
+    this.PostCode = PostCode;
+    this.RoundTripMileage = RoundTripMileage;
+    this.VehicleType = VehicleType;
+    this.PotentialClaimValue = PotentialClaimValue;
+  }
+}
 
 /**
  * Class to represent a MGC member
