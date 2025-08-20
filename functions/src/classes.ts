@@ -57,6 +57,82 @@ export class FlightBackEnd {
 /**
  * Class to represent a Gift Aid Summary.
  */
+export class GiftAidDetail {
+  readonly CarMiles: string;
+  readonly Passenger: string;
+  readonly Motorcycle: string;
+  readonly Cycle: string;
+  readonly BusTrain: string;
+  readonly Date: string;
+  readonly DutyComment: string;
+  readonly MemberRef: string;
+  readonly Attended: string;
+  readonly MemberNumber: string;
+  readonly MemberName: string;
+  readonly PostCode: string;
+  readonly Mileage: string;
+  readonly Flights: string;
+  readonly P1Flights: string;
+  readonly PUIP2Flights: string;
+  readonly P1Paid: string;
+  readonly P2Paid: string;
+  readonly SharedCost: string;
+  readonly OtherPaid: string;
+  /**
+  * Class constructor
+  * @param {string} CarMiles
+  * @param {string} Passenger
+  * @param {string} Motorcycle
+  * @param {string} Cycle
+  * @param {string} BusTrain
+  * @param {string} Date
+  * @param {string} DutyComment
+  * @param {string} MemberRef
+  * @param {string} Attended
+  * @param {string} MemberNumber
+  * @param {string} MemberName
+  * @param {string} PostCode
+  * @param {string} Mileage
+  * @param {string} Flights
+  * @param {string} P1Flights
+  * @param {string} PUIP2Flights
+  * @param {string} P1Paid
+  * @param {string} P2Paid
+  * @param {string} SharedCost
+  * @param {string} OtherPaid
+  */
+  constructor(CarMiles: string, Passenger: string, Motorcycle: string,
+    Cycle: string, BusTrain: string, Date: string, DutyComment: string,
+    MemberRef: string, Attended: string, MemberNumber: string,
+    MemberName: string, PostCode: string, Mileage: string, Flights: string,
+    P1Flights: string, PUIP2Flights: string, P1Paid: string, P2Paid: string,
+    SharedCost: string, OtherPaid: string) {
+    this.CarMiles = CarMiles;
+    this.Passenger = Passenger;
+    this.Motorcycle = Motorcycle;
+    this.Cycle = Cycle;
+    this.BusTrain = BusTrain;
+    this.Date = Date;
+    this.DutyComment = DutyComment;
+    this.MemberRef = MemberRef;
+    this.Attended = Attended;
+    this.MemberNumber = MemberNumber;
+    this.MemberName = MemberName;
+    this.PostCode = PostCode;
+    this.Mileage = Mileage;
+    this.Flights = Flights;
+    this.P1Flights = P1Flights;
+    this.PUIP2Flights = PUIP2Flights;
+    this.P1Paid = P1Paid;
+    this.P2Paid = P2Paid;
+    this.SharedCost = SharedCost;
+    this.OtherPaid = OtherPaid;
+  }
+}
+
+/**
+ * Class to represent a Gift Aid Summary.
+ */
 export class GiftAidSummary {
   readonly MemberRef: string;
   readonly MemberNumber: string;
