@@ -57,7 +57,7 @@ export class FlightBackEnd {
 /**
  * Class to represent a Gift Aid Summary.
  */
-export class GiftAidDetail {
+export class GiftAidDetailBackEnd {
   readonly CarMiles: string;
   readonly Passenger: string;
   readonly Motorcycle: string;
@@ -133,7 +133,7 @@ export class GiftAidDetail {
 /**
  * Class to represent a Gift Aid Summary.
  */
-export class GiftAidSummary {
+export class GiftAidSummaryBackEnd {
   readonly MemberRef: string;
   readonly MemberNumber: string;
   readonly MemberName: string;
@@ -144,7 +144,7 @@ export class GiftAidSummary {
   readonly RoundTripMileage: string;
   readonly VehicleType: string;
   readonly PotentialClaimValue: string;
-/**
+  /**
   * Class constructor
   * @param {string} MemberRef
   * @param {string} MemberNumber

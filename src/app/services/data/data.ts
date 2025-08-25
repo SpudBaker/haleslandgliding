@@ -34,6 +34,7 @@ export class DataService {
       switchMap(d => {
         this.initiated = true;
         const data = d.data as Array<any>;
+        console.log('api data', data);
         this.accounts$.next(this.extractAccounts(data[1]));
         this.flights$.next(this.extractFlights(data[0]));
         this.member$.next(this.extractMember(data[2]));

@@ -4,7 +4,8 @@ import {EMPTY, forkJoin, from, Observable, of} from "rxjs";
 import {catchError, map, switchMap} from "rxjs/operators";
 import {MethodOptions} from "googleapis/build/src/apis/abusiveexperiencereport";
 import {parse, Options} from "csv-parse";
-import {FlightBackEnd, MemberBackEnd, TransactionBackEnd} from "./classes";
+import {FlightBackEnd, GiftAidSummaryBackEnd, GiftAidDetailBackEnd,
+  MemberBackEnd, TransactionBackEnd} from "./classes";
 import cors = require("cors");
 
 interface parseCsvStringResponse {
@@ -24,6 +25,9 @@ function filterFileRefs(fullList: Array<driveV3.Schema$File> | undefined)
   let accounts: driveV3.Schema$File | undefined;
   let flights: driveV3.Schema$File | undefined;
   let members: driveV3.Schema$File | undefined;
+  let giftAidDetail: driveV3.Schema$File | undefined;
+  let giftAidSummary: driveV3.Schema$File | undefined;
+
   fullList?.forEach((file) => {
     if (file.name?.toLowerCase() == "accounts.csv") {
       if (accounts?.modifiedTime && file?.modifiedTime) {
@@ -52,8 +56,28 @@ function filterFileRefs(fullList: Array<driveV3.Schema$File> | undefined)
         members = file;
       }
     }
+    if (file.name?.toLowerCase() == "giftaid detail.csv") {
+      if (giftAidDetail?.modifiedTime && file?.modifiedTime) {
+        if (new Date(giftAidDetail.modifiedTime) <
+          new Date(file.modifiedTime)) {
+          giftAidDetail = file;
+        }
+      } else {
+        giftAidDetail = file;
+      }
+    }
+    if (file.name?.toLowerCase() == "giftaid summary.csv") {
+      if (giftAidSummary?.modifiedTime && file?.modifiedTime) {
+        if (new Date(giftAidSummary.modifiedTime) <
+          new Date(file.modifiedTime)) {
+          giftAidSummary = file;
+        }
+      } else {
+        giftAidSummary = file;
+      }
+    }
   });
-  return [accounts, flights, members];
+  return [accounts, flights, members, giftAidDetail, giftAidSummary];
 }
 
 /**
@@ -101,7 +125,7 @@ function getFile(fileRefs: Array<driveV3.Schema$File | undefined>,
       }),
     );
   } else {
-    return EMPTY;
+    return of("");
   }
 }
 
@@ -237,6 +261,73 @@ function getFlightDetails(memberID: string,
 }
 
 /**
+ * get gift aid summary for a member
+ * @param {string} memberID member id (identity)
+ * @param {Array<driveV3.Schema$File | undefined>} fileRefs
+ * @return {Observable<GiftAidSummaryBackEnd>}
+ */
+function getGiftAidSummary(memberID: string,
+  fileRefs: Array<driveV3.Schema$File | undefined>)
+  : Observable< GiftAidSummaryBackEnd[]> {
+  const arrGiftAidSummary = new Array<GiftAidSummaryBackEnd>();
+  if (fileRefs) {
+    return getFile(fileRefs, 4).pipe(
+      switchMap((utf8) => {
+        functions.logger.info("gift aid summary file length", utf8.length);
+        return parseCsvString(utf8);
+      }),
+      map((csvArray) => {
+        functions.logger.info("gift aid summary csv array length",
+          csvArray.response.length);
+        functions.logger.info("member ID for spud", memberID);
+        for (let i=1; i < csvArray.response.length; i++) {
+          const row = csvArray.response[i];
+          if ((row[0]) == memberID) {
+            arrGiftAidSummary.push(new GiftAidSummaryBackEnd(row[0], row[1],
+              row[2], row[3], row[4], row[5], row[6], row[7],
+              row[8], row[9]));
+          }
+        }
+        return arrGiftAidSummary;
+      })
+    );
+  } else {
+    return of(arrGiftAidSummary);
+  }
+}
+
+/**
+ * get gift aid details for a member
+ * @param {string} memberID member id (identity)
+ * @param {Array<driveV3.Schema$File | undefined>} fileRefs
+ * @return {Observable<GiftAidDetailsBackEnd>}
+ */
+function getGiftAidDetail(memberID: string,
+  fileRefs: Array<driveV3.Schema$File | undefined>)
+  : Observable< GiftAidDetailBackEnd[]> {
+  const arrGiftAidDetails= new Array<GiftAidDetailBackEnd>();
+  if (fileRefs) {
+    return getFile(fileRefs, 3).pipe(
+      switchMap((utf8) => parseCsvString(utf8)),
+      map((csvArray) => {
+        for (let i=1; i < csvArray.response.length; i++) {
+          const row = csvArray.response[i];
+          if ((row[8]) == memberID) {
+            arrGiftAidDetails.push(new GiftAidDetailBackEnd(row[0], row[1],
+              row[2], row[3], row[4], row[5], row[6], row[8], row[9],
+              row[10], row[11], row[12], row[13], row[14], row[15],
+              row[16], row[17], row[18], row[19], row[20]));
+          }
+        }
+        return arrGiftAidDetails;
+      })
+    );
+  } else {
+    return of(arrGiftAidDetails);
+  }
+}
+
+/**
  * get transactions for a member
  * @param {string} memberID member id (identity)
  * @param {Array<driveV3.Schema$File | undefined>} fileRefs
@@ -267,7 +358,8 @@ function getTransactions(memberID: string,
 
 exports.getGlidexFiles = functions.https.onRequest(
   (req, res) => {
-    const options = {origin: ["https://glidexmemberview.web.app", "https://glidexmemberview.firebaseapp.com"]};
+    // const options = {origin: ["https://glidexmemberview.web.app", "https://glidexmemberview.firebaseapp.com"]};
+    const options = {};
     cors(options)(req, res, () => {
       const email: string = req.query.email as string;
       setDriveAPI().pipe(
@@ -278,10 +370,13 @@ exports.getGlidexFiles = functions.https.onRequest(
               return forkJoin([
                 getFlightDetails(member.Ref, fileRefs),
                 getTransactions(member.Ref, fileRefs),
+                getGiftAidSummary(member.Ref, fileRefs),
+                getGiftAidDetail(member.Ref, fileRefs),
               ]).pipe(
                 map((results) => {
                   return res.send(JSON.stringify(
-                    {data: [results[0], results[1], member]}
+                    {data: [results[0], results[1], member,
+                      results[2], results[3]]}
                   ));
                 })
               );
