@@ -18,6 +18,8 @@ export class DataService {
   private initiated = false;
   public accounts$ = new ReplaySubject<Globals.TransactionFrontEnd[] | null>(1);
   public flights$ = new ReplaySubject<Globals.FlightFrontEnd[] | null>(1);
+  public giftAidDetail$ = new ReplaySubject<Globals.GiftAidDetailFrontEnd[] | null>(1);
+  public giftAidSummary$ = new ReplaySubject<Globals.GiftAidSummaryFrontEnd[] | null>(1);
   public member$ = new ReplaySubject<Globals.MemberFrontEnd | null>(1);
   private firebaseFunctions: Functions = inject(Functions);
 
@@ -38,6 +40,8 @@ export class DataService {
         this.accounts$.next(this.extractAccounts(data[1]));
         this.flights$.next(this.extractFlights(data[0]));
         this.member$.next(this.extractMember(data[2]));
+        this.giftAidSummary$.next(this.extractGiftAidSummary(data[3]));
+        this.giftAidDetail$.next(this.extractGiftAidDetail(data[4]));
         return this.alertController.dismiss();
       }),
       catchError(err =>{
@@ -81,6 +85,30 @@ export class DataService {
       arr.push(new Globals.FlightFrontEnd(f.Ref, f.P1Ref, f.P2Ref, f.ChargeToText,
         new Date(f.FlightDate), f.Glider, f.TakeOff, f.Duration, f.Type, f.FlightType,
         f.P1, f.P2,f.Notes, f.ChargeToRef));
+    });
+    return arr;
+  }
+
+  private extractGiftAidDetail(data: Object): Globals.GiftAidDetailFrontEnd[] {
+    const arr = new Array<Globals.GiftAidDetailFrontEnd>();
+    const giftAidDetail = data as GlobalsBackEnd.GiftAidDetailBackEnd[];
+    giftAidDetail.forEach(g => {
+      arr.push(new Globals.GiftAidDetailFrontEnd(+g.CarMiles, g.Passenger, g.Motorcycle,
+        g.Cycle, g.BusTrain, new Date(g.Date), g.DutyComment, g.MemberRef, new Date(g.Attended),
+        g.MemberNumber, g.MemberName, g.PostCode, +g.Mileage, +g.Flights, +g.P1Flights,
+        +g.PUIP2Flights, +g.P1Paid, +g.P2Paid, +g.SharedCost, +g.OtherPaid
+      );
+    });
+    return arr;
+  }
+  
+  private extractGiftAidSummary(data: Object): Globals.GiftAidSummaryFrontEnd[] {
+    const arr = new Array<Globals.GiftAidSummaryFrontEnd>();
+    const giftAidSummary = data as GlobalsBackEnd.GiftAidSummaryBackEnd[];
+    giftAidSummary.forEach(g => {
+      arr.push(new Globals.GiftAidSummaryFrontEnd(g.MemberRef, g.MemberNumber,
+        g.MemberName, new Date(g.FromDate), new Date(g.ToDate), +g.ClaimDays,
+        g.PostCode, +g.RoundTripMileage, g.VehicleType, +g.PotentialClaimValue));
     });
     return arr;
   }
