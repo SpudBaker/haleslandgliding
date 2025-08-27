@@ -2,7 +2,7 @@ import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IonButton, IonCol, IonGrid, IonRow, IonIcon, IonItem, IonList, IonSelect, IonSelectOption, LoadingController, NavController } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
-import { airplaneOutline, cashOutline, logOutOutline, personCircleOutline } from 'ionicons/icons';
+import { airplaneOutline, cashOutline, giftOutline, logOutOutline, personCircleOutline } from 'ionicons/icons';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../services/auth/auth';
 import { DataService } from 'src/app/services/data/data';
@@ -37,18 +37,22 @@ export class NavMainComponent {
       tap(route => this.selectedRoute = route)
     ).subscribe();
     this.user$ = this.authService.user$;
-    addIcons({airplaneOutline, cashOutline, logOutOutline, personCircleOutline});
+    addIcons({airplaneOutline, cashOutline, giftOutline, logOutOutline, personCircleOutline});
   }
 
-  public navAccountsPage(): void{
+  public navAccountsPage(): void {
     this.navController.navigateRoot('shell/' + MGCGlobals.routes.ACCOUNT);
   }
 
-  public navFlightsPage(): void{
+  public navFlightsPage(): void {
     this.navController.navigateRoot('shell/' + MGCGlobals.routes.FLIGHTS);
   }
+
+  public navGiftSummaryPage(): void {
+      this.navController.navigateRoot('shell/' + MGCGlobals.routes.GIFTAIDSUMMARY);
+  }
   
-  public navUserPage(): void{
+  public navUserPage(): void {
     this.navController.navigateRoot('shell/' + MGCGlobals.routes.MEMBERSHIP);
   }
 
@@ -76,6 +80,9 @@ export class NavMainComponent {
         break;
       case MGCGlobals.routes.FLIGHTS:
         this.navFlightsPage();
+        break;
+      case MGCGlobals.routes.GIFTAIDSUMMARY:
+        this.navGiftSummaryPage();
         break;
       case MGCGlobals.routes.MEMBERSHIP:
         this.navUserPage();

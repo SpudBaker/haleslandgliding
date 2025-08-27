@@ -10,6 +10,7 @@ import { DataService } from './app/services/data/data';
 export enum routes {
     ACCOUNT = 'account',
     FLIGHTS = 'flights',
+    GIFTAIDSUMMARY = 'giftAidSummary',
     LOGIN = 'login',
     MEMBERSHIP = 'membership',
 }

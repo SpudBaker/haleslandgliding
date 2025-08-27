@@ -11,6 +11,7 @@
                                     <ion-select-option value={{MGCGlobals.routes.ACCOUNT}}>Account</ion-select-option>
                                     <ion-select-option value={{MGCGlobals.routes.FLIGHTS}}>Flights</ion-select-option>
                                     <ion-select-option value={{MGCGlobals.routes.MEMBERSHIP}}>Membership</ion-select-option>
+                                    <ion-select-option value={{MGCGlobals.routes.GIFTAIDSUMMARY}}>Gift Aid</ion-select-option>
                                     <ion-select-option value={{MGCGlobals.routes.LOGIN}}>Sign Out</ion-select-option>
                                 </ion-select>
                             </ion-item>
@@ -42,7 +43,15 @@
                     <ion-col size="4"></ion-col>
                     <ion-col size="8">
                         <ion-button fill="clear" [disabled]="context.selectedRoute == MGCGlobals.routes.MEMBERSHIP" (click)="navUserPage()">
-                            <ion-icon name="person-circle-outline" (click)="navUserPage()"></ion-icon>
+                            <ion-icon name="person-circle-outline"></ion-icon>
+                        </ion-button>
+                    </ion-col>
+                </ion-row>
+                <ion-row>
+                    <ion-col size="4"></ion-col>
+                    <ion-col size="8">
+                        <ion-button fill="clear" [disabled]="context.selectedRoute == MGCGlobals.routes.GIFTAIDSUMMARY" (click)="navGiftSummaryPage()">
+                            <ion-icon name="gift-outline"></ion-icon>
                         </ion-button>
                     </ion-col>
                 </ion-row>
