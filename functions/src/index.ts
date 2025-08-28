@@ -268,8 +268,8 @@ function getFlightDetails(memberID: string,
  */
 function getGiftAidSummary(memberID: string,
   fileRefs: Array<driveV3.Schema$File | undefined>)
-  : Observable< GiftAidSummaryBackEnd[]> {
-  const arrGiftAidSummary = new Array<GiftAidSummaryBackEnd>();
+  : Observable< GiftAidSummaryBackEnd | undefined> {
+  let giftAidSummary: GiftAidSummaryBackEnd;
   if (fileRefs) {
     return getFile(fileRefs, 4).pipe(
       switchMap((utf8) => {
@@ -283,16 +283,16 @@ function getGiftAidSummary(memberID: string,
         for (let i=1; i < csvArray.response.length; i++) {
           const row = csvArray.response[i];
           if ((row[0]) == memberID) {
-            arrGiftAidSummary.push(new GiftAidSummaryBackEnd(row[0], row[1],
+            giftAidSummary = new GiftAidSummaryBackEnd(row[0], row[1],
               row[2], row[3], row[4], row[5], row[6], row[7],
-              row[8], row[9]));
+              row[8], row[9]);
           }
         }
-        return arrGiftAidSummary;
+        return giftAidSummary;
       })
     );
   } else {
-    return of(arrGiftAidSummary);
+    return of(undefined);
   }
 }
 

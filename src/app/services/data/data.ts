@@ -19,7 +19,7 @@ export class DataService {
   public accounts$ = new ReplaySubject<Globals.TransactionFrontEnd[] | null>(1);
   public flights$ = new ReplaySubject<Globals.FlightFrontEnd[] | null>(1);
   public giftAidDetail$ = new ReplaySubject<Globals.GiftAidDetailFrontEnd[] | null>(1);
-  public giftAidSummary$ = new ReplaySubject<Globals.GiftAidSummaryFrontEnd[] | null>(1);
+  public giftAidSummary$ = new ReplaySubject<Globals.GiftAidSummaryFrontEnd | null>(1);
   public member$ = new ReplaySubject<Globals.MemberFrontEnd | null>(1);
   private firebaseFunctions: Functions = inject(Functions);
 
@@ -101,15 +101,13 @@ export class DataService {
     return arr;
   }
   
-  private extractGiftAidSummary(data: Object): Globals.GiftAidSummaryFrontEnd[] {
+  private extractGiftAidSummary(data: Object): Globals.GiftAidSummaryFrontEnd {
     const arr = new Array<Globals.GiftAidSummaryFrontEnd>();
-    const giftAidSummary = data as GlobalsBackEnd.GiftAidSummaryBackEnd[];
-    giftAidSummary.forEach(g => {
-      arr.push(new Globals.GiftAidSummaryFrontEnd(g.MemberRef, g.MemberNumber,
+    const g = data as GlobalsBackEnd.GiftAidSummaryBackEnd;
+    console.log('g', g);
+    return new Globals.GiftAidSummaryFrontEnd(g.MemberRef, g.MemberNumber,
         g.MemberName, new Date(g.FromDate), new Date(g.ToDate), +g.ClaimDays,
-        g.PostCode, +g.RoundTripMileage, g.VehicleType, +g.PotentialClaimValue));
-    });
-    return arr;
+        g.PostCode, +g.RoundTripMileage, g.VehicleType, +g.PotentialClaimValue);
   }
   
   private extractMember(data: Object): Globals.MemberFrontEnd {

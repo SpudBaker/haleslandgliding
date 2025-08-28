@@ -1,1 +1,102 @@
-Gift Aid Summary
+@if(giftAidSummary$ | async; as giftAidSummary){
+    @if(giftAidSummary){
+    <ion-grid>
+        <ion-row>
+            <ion-col size="2"></ion-col>
+            <ion-col size="8">
+                <ion-item>
+                    <ion-label>
+                        <h3>Member Ref:</h3>
+                        {{giftAidSummary.MemberRef}}
+                    </ion-label>
+                </ion-item>
+            </ion-col>
+            <ion-col size="2"></ion-col>
+        </ion-row>
+        <ion-row>
+            <ion-col size="2"></ion-col>
+            <ion-col size="8">
+                <ion-item>
+                    <ion-label>
+                        <h3>Member Number:</h3>
+                        {{giftAidSummary.MemberNumber}}
+                    </ion-label>
+                </ion-item>
+            </ion-col>
+            <ion-col size="2"></ion-col>
+        </ion-row>
+        <ion-row>
+            <ion-col size="2"></ion-col>
+            <ion-col size="8">
+                <ion-item>
+                    <ion-label>
+                        <h3>From Date:</h3>
+                        {{giftAidSummary.FromDate.toLocaleDateString()}}
+                    </ion-label>
+                </ion-item>
+            </ion-col>
+            <ion-col size="2"></ion-col>
+        </ion-row>
+        <ion-row>
+            <ion-col size="2"></ion-col>
+            <ion-col size="8">
+                <ion-item>
+                    <ion-label>
+                        <h3>To Date:</h3>
+                        {{giftAidSummary.ToDate.toLocaleDateString()}}
+                    </ion-label>
+                </ion-item>
+            </ion-col>
+            <ion-col size="2"></ion-col>
+        </ion-row>
+        <ion-row>
+            <ion-col size="2"></ion-col>
+            <ion-col size="8">
+                <ion-item>
+                    <ion-label>
+                        <h3>Post Code:</h3>
+                        {{giftAidSummary.PostCode}}
+                    </ion-label>
+                </ion-item>
+            </ion-col>
+            <ion-col size="2"></ion-col>
+        </ion-row>
+        <ion-row>
+            <ion-col size="2"></ion-col>
+            <ion-col size="8">
+                <ion-item>
+                    <ion-label>
+                        <h3>Round Trip Mileage:</h3>
+                        {{giftAidSummary.RoundTripMileage}}
+                    </ion-label>
+                </ion-item>
+            </ion-col>
+            <ion-col size="2"></ion-col>
+        </ion-row>
+        <ion-row>
+            <ion-col size="2"></ion-col>
+            <ion-col size="8">
+                <ion-item>
+                    <ion-label>
+                        <h3>Vehicle Type:</h3>
+                        {{giftAidSummary.VehicleType}}
+                    </ion-label>
+                </ion-item>
+            </ion-col>
+            <ion-col size="2"></ion-col>
+        </ion-row>
+        <ion-row>
+            <ion-col size="2"></ion-col>
+            <ion-col size="8">
+                <ion-item>
+                    <ion-label>
+                        <h3>Potential Claim Value:</h3>
+                        {{giftAidSummary.PotentialClaimValue | currency:"GBP"}}
+                    </ion-label>
+                </ion-item>
+            </ion-col>
+            <ion-col size="2"></ion-col>
+        </ion-row>
+    </ion-grid>
+    }
+}
