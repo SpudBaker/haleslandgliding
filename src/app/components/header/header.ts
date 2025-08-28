@@ -6,6 +6,7 @@ import { AuthService } from 'src/app/services/auth/auth';
 import { DataService } from 'src/app/services/data/data';
 import { GeneralService } from 'src/app/services/general/general';
 import { map } from 'rxjs/operators';
+import * as Globals from '../../../mgc-globals';
 
 @Component({
   selector: 'app-header',
@@ -26,7 +27,13 @@ export class HeaderComponent {
 
   constructor(){
     this.auth.selectedRoute.pipe(
-      map(text => this.text = text)
+      map(text => {
+        if(text == Globals.routes.GIFTAIDSUMMARY) {
+          this.text = 'gift aid';
+        } else {
+          this.text = text
+        }
+      })
     ).subscribe();
   }
 
