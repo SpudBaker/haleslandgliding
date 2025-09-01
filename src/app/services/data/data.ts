@@ -96,7 +96,7 @@ export class DataService {
       arr.push(new Globals.GiftAidDetailFrontEnd(+g.CarMiles, g.Passenger, g.Motorcycle,
         g.Cycle, g.BusTrain, new Date(g.Date), g.DutyComment, g.MemberRef, new Date(g.Attended),
         g.MemberNumber, g.MemberName, g.PostCode, +g.Mileage, +g.Flights, +g.P1Flights,
-        +g.PUIP2Flights, +g.P1Paid, +g.P2Paid, +g.SharedCost, +g.OtherPaid));
+        +g.PUIP2Flights, +g.P1Paid, +g.P2Paid, +g.SharedCost, +g.OtherPaid, g.Comments));
     });
     return arr;
   }

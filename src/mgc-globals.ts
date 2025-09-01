@@ -146,6 +146,7 @@ export class GiftAidDetailFrontEnd {
   readonly P2Paid: number;
   readonly SharedCost: number;
   readonly OtherPaid: number;
+  readonly Comments: string;
   /**
   * Class constructor
   * @param {number} CarMiles
@@ -168,13 +169,14 @@ export class GiftAidDetailFrontEnd {
   * @param {number} P2Paid
   * @param {number} SharedCost
   * @param {number} OtherPaid
+  * @param {string} Comments
   */
   constructor(CarMiles: number, Passenger: string, Motorcycle: string,
     Cycle: string, BusTrain: string, Date: Date, DutyComment: string,
     MemberRef: string, Attended: Date, MemberNumber: string,
     MemberName: string, PostCode: string, Mileage: number, Flights: number,
     P1Flights: number, PUIP2Flights: number, P1Paid: number, P2Paid: number,
-    SharedCost: number, OtherPaid: number) {
+    SharedCost: number, OtherPaid: number, Comments: string) {
     this.CarMiles = CarMiles;
     this.Passenger = Passenger;
     this.Motorcycle = Motorcycle;
@@ -195,6 +197,7 @@ export class GiftAidDetailFrontEnd {
     this.P2Paid = P2Paid;
     this.SharedCost = SharedCost;
     this.OtherPaid = OtherPaid;
+    this.Comments = Comments;
   }
 }
 

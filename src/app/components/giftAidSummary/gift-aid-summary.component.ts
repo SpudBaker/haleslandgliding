@@ -50,12 +50,12 @@ export class GiftAidSummaryComponent {
       first(),
       map(details => {
         const headerRow = '"Member Ref","Attended","Member Number","Member Name","Post Code","Mileage","Flights",' +
-        '"P1 Flights","P2 Flights","P1 Paid","Shared Cost","Other Paid" \n';
+        '"P1 Flights","P2 Flights","P1 Paid","Shared Cost","Other Paid","Comments"\n';
         let firstDetailRow = true;
         let detailRows = '';
         details?.forEach(d => {
           const detailRow = '"'+d.MemberRef+'","'+d.Attended+'","'+d.MemberNumber+'","'+d.MemberName+'","'+d.PostCode+'","'+d.Mileage+
-          '","'+d.Flights+'","'+d.P1Flights+'","'+d.P1Paid+'","'+d.P2Paid+'","'+d.SharedCost+'","'+d.OtherPaid+'"';
+          '","'+d.Flights+'","'+d.P1Flights+'","'+d.P1Paid+'","'+d.P2Paid+'","'+d.SharedCost+'","'+d.OtherPaid+'","'+d.Comments+'"';
           if(firstDetailRow){
             detailRows = detailRow;
             firstDetailRow = false;
