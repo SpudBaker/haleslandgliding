@@ -104,7 +104,6 @@ export class DataService {
   private extractGiftAidSummary(data: Object): Globals.GiftAidSummaryFrontEnd {
     const arr = new Array<Globals.GiftAidSummaryFrontEnd>();
     const g = data as GlobalsBackEnd.GiftAidSummaryBackEnd;
-    console.log('g', g);
     return new Globals.GiftAidSummaryFrontEnd(g.MemberRef, g.MemberNumber,
         g.MemberName, new Date(g.FromDate), new Date(g.ToDate), +g.ClaimDays,
         g.PostCode, +g.RoundTripMileage, g.VehicleType, +g.PotentialClaimValue);

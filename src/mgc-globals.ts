@@ -123,7 +123,7 @@ export class FlightFrontEnd {
 }
 
 /**
- * Class to represent a Gift Aid Summary.
+ * Class to represent a Gift Aid Detail.
  */
 export class GiftAidDetailFrontEnd {
   readonly CarMiles: number;
