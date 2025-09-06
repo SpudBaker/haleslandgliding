@@ -31,7 +31,7 @@ export namespace AuthGuard {
                         map(() => true)
                     )
                 } else {
-                    navController.navigateRoot('shell/login');
+                    navController.navigateRoot('shell/' + routes.LOGIN);
                 return of(false);
                 }
             })
@@ -46,11 +46,12 @@ export namespace AuthGuard {
 
         return authService.user$.pipe(
             switchMap(user => {
+                console.log('email', user?.email);
                 if(!user?.email){
                     return of(true);
                 } else {
-                    navController.navigateRoot('shell/user');
-                return of(false);
+                    navController.navigateRoot('shell/' + routes.MEMBERSHIP);
+                    return of(false);
                 }
             })
         )
