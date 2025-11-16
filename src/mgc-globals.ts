@@ -58,15 +58,6 @@ export namespace AuthGuard {
     }
 }
 
-export function convertStringToDate(d: string): Date | null {
-    const timestamp = Date.parse('foo');
-    if (isNaN(timestamp) == false) {
-        return new Date(timestamp);
-    } else {
-        return null;
-    }
-}
-
 /**
  ** Class to represent a Flight
  */

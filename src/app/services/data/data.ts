@@ -111,9 +111,11 @@ export class DataService {
   
   private extractMember(data: Object): Globals.MemberFrontEnd {
     const m = data as GlobalsBackEnd.MemberBackEnd;
+    console.log('extractMember');
+    console.log(m);
     return new Globals.MemberFrontEnd(m.Ref, m.MemberType, m.MembershipNo, m.Name,
       m.Postcode, m.TelMobile, m.TelHome, m.EMail, m.EmergencyContact, new Date(m.DateJoined),
-      new Date(m.MembershipExpires), m.LapsedMember, Globals.convertStringToDate(m.MedicalValidTo),
+      new Date(m.MembershipExpires), m.LapsedMember, new Date(m.MedicalValidTo),
       new Date(m.AFRDue), m.GiftAidMiles, m.ChargeToName, +m.LatestBalance, new Date(m.DateLastFlight)
     );
   }
