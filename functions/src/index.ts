@@ -358,8 +358,8 @@ function getTransactions(memberID: string,
 
 exports.getGlidexFiles = functions.https.onRequest(
   (req, res) => {
-    // const options = {origin: ["https://glidexmemberview.web.app", "https://glidexmemberview.firebaseapp.com"]};
-    const options = {};
+    const options = {origin: ["https://glidexmemberview.web.app", "https://glidexmemberview.firebaseapp.com"]};
+    // const options = {};
     cors(options)(req, res, () => {
       const email: string = req.query.email as string;
       setDriveAPI().pipe(
